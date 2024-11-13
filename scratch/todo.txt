@@ -1,0 +1,36 @@
+
+-Make Markers for JointJS paper be stored
+-Code formatting for front-end
+-Logging for front-end
+-Fix Created UID and Date not getting sent to front-end, maybe its just audit fields in general
+
+-Implement isEqual() for all DTOs
+-Create Docker image for full project
+-Implement User Accounts
+
+-Change all usages of ToEdit into ForEdit
+
+-Add form validators in front-end
+
+
+-Update to have forms use patchValue instead of setValue
+-Implement ChangeDetectionStrategy?
+-Implement ErrorHandler in Angular
+    import { ErrorHandler } from '@angular/core';
+
+<!-- In component template -->
+<div [class.highlighted]="isHighlighted">Highlighted Content</div>
+
+
+-Lazy load modules?
+    <!-- Bad -->
+    const routes: Routes = [
+      { path: 'dashboard', component: DashboardComponent },
+      // ...
+    ];
+
+    <!-- Good -->
+    const routes: Routes = [
+      { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
+      // ...
+    ];

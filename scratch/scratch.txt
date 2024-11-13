@@ -1,0 +1,98 @@
+datadoh
+dataspect
+scaffold
+Code Spectre
+
+#d8d8db
+#658095;
+document.onclick=(e)=>{console.log("Coordinates ["+e.pageX + "," + e.pageY + "]");}
+kubectl -n postgresql create secret generic postgresql --from-literal POSTGRES_USER="postgresadmin" --from-literal POSTGRES_PASSWORD='yaoming11' --from-literal POSTGRES_DB="postgres" --from-literal REPLICATION_USER="postgresadminru" --from-literal REPLICATION_PASSWORD='yaoming11'
+
+// String urlScheme = "jdbc";
+// String provider = "postgresql";
+// String hostname = "localhost";
+// String port = "5432";
+// String maintenanceDatabaseName = "postgres";
+// String jdbcUrl = urlScheme + ":" + provider + "://" + hostname + ":" + port + "/" + databaseName;
+// String driverName = "org.postgresql.Driver";
+// String username = "postgresadmin";
+// String password = "yaoming11";
+{
+  "scheme": "jdbc",
+  "provider": "postgresql",
+  "hostname": "localhost",
+  "port": "5432",
+  "maintenanceDatabaseName": "postgres"
+}
+
+{
+  "sourceUrlId": 1,
+  "driverName": "org.postgresql.Driver",
+  "username": "postgresadmin",
+  "password": "yaoming11"
+}
+
+{
+  "name": {
+    "databaseName": "postgres",
+    "schemaName": "houseinv"
+  },
+  "sourceConfigId": 2
+}
+
+
+SELECT * FROM canvas.canvas_link_cell;
+SELECT * FROM canvas.canvas_custom_cell;
+SELECT * FROM canvas.canvas_cell;
+SELECT * FROM canvas.canvas;
+
+SELECT * FROM model.database_model_foreign_key;
+SELECT * FROM model.database_model_primary_key_column;
+SELECT * FROM model.database_model_primary_key;
+SELECT * FROM model.database_model_column;
+SELECT * FROM model.database_model_column_category;
+SELECT * FROM model.database_model_table;
+SELECT * FROM model.database_model_table_category;
+SELECT * FROM model.database_model;
+SELECT * FROM model.database_model_data_type;
+SELECT * FROM model.database_model_source_config;
+SELECT * FROM model.database_model_source_url;
+SELECT * FROM model.db_model_source_preset;
+SELECT * FROM model.db_model_source_url_supported_provider;
+SELECT * FROM model.db_model_source_url_supported_scheme;
+SELECT * FROM model.db_model_source_config_supported_driver;
+
+----------------------------------------
+
+DROP TABLE IF EXISTS canvas.canvas_link_cell;
+DROP TABLE IF EXISTS canvas.canvas_custom_cell;
+DROP TABLE IF EXISTS canvas.canvas_cell;
+DROP TABLE IF EXISTS canvas.canvas;
+
+DROP SCHEMA IF EXISTS canvas;
+
+DROP TABLE IF EXISTS model.db_foreign_key_model;
+DROP TABLE IF EXISTS model.db_primary_key_column_model;
+DROP TABLE IF EXISTS model.db_primary_key_model;
+DROP TABLE IF EXISTS model.db_column_model;
+DROP TABLE IF EXISTS model.db_column_category;
+DROP TABLE IF EXISTS model.db_table_model;
+DROP TABLE IF EXISTS model.db_table_category;
+DROP TABLE IF EXISTS model.db_model;
+DROP TABLE IF EXISTS model.db_data_type;
+DROP TABLE IF EXISTS model.db_model_source_config;
+DROP TABLE IF EXISTS model.db_model_source_url;
+DROP TABLE IF EXISTS model.db_model_source_preset;
+DROP TABLE IF EXISTS model.db_model_source_url_supported_provider;
+DROP TABLE IF EXISTS model.db_model_source_url_supported_scheme;
+DROP TABLE IF EXISTS model.db_model_source_config_supported_driver;
+
+DROP SCHEMA IF EXISTS model;
+
+
+SELECT t.name, c.name, c.column_index, d.name, category.name
+FROM dbmodel.database_model_table t
+JOIN dbmodel.database_model_column as c ON t.id = c.table_model_id
+JOIN dbmodel.database_model_data_type as d ON d.id = c.data_type_id
+JOIN dbmodel.database_model_column_category as category ON category.id = c.column_category_id
+order by t.name, c.column_index asc;
