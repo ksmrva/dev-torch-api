@@ -8,11 +8,12 @@ DROP SCHEMA IF EXISTS canvas;
 ---------------------------------------------------------------------------------
 -- Schema: canvas
 ---------------------------------------------------------------------------------
+
 CREATE SCHEMA IF NOT EXISTS canvas
     AUTHORIZATION postgresadmin;
 
 COMMENT ON SCHEMA canvas
-    IS 'Database for Canvas related Objects';
+    IS 'Entities used to create and maintain Canvases used to document and diagram code';
 
 ---------------------------------------------------------------------------------
 -- Table: canvas.canvas

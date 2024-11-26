@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_table_category", schema = "model")
+@Table(name = "table_category", schema = "db_model")
 public class DbTableCategory extends AbstractBaseEntity<DbTableCategoryDto, DbTableCategory> {
 
     @Column(name = "name")

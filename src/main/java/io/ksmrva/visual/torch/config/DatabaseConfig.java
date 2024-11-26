@@ -67,6 +67,11 @@ public class DatabaseConfig {
 
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
+
+        // if(isDebug) {
+        //    hibernateProperties.put("hibernate.show_sql", "true");
+        // }
+
         return hibernateProperties;
     }
 

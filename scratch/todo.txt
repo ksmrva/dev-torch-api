@@ -1,18 +1,15 @@
-
 -Make Markers for JointJS paper be stored
--Code formatting for front-end
 -Logging for front-end
 -Fix Created UID and Date not getting sent to front-end, maybe its just audit fields in general
+-Set all z-index values
+-Look into refining the height of the main content on page, currently set to 80vh
 
--Implement isEqual() for all DTOs
+-Double check .map( usage on front-end
+-Should get rid of PrimaryKeyJoinColumn?
 -Create Docker image for full project
 -Implement User Accounts
-
 -Change all usages of ToEdit into ForEdit
-
 -Add form validators in front-end
-
-
 -Update to have forms use patchValue instead of setValue
 -Implement ChangeDetectionStrategy?
 -Implement ErrorHandler in Angular

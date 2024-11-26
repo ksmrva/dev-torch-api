@@ -1,4 +1,4 @@
-package io.ksmrva.visual.torch.domain.entity.model.code;
+package io.ksmrva.visual.torch.domain.entity.model.code.block;
 
 import jakarta.persistence.*;
 

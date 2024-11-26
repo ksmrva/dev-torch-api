@@ -12,14 +12,14 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @DynamicUpdate
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "db_column_model", schema = "model")
+@Table(name = "column_model", schema = "db_model")
 public class DbColumnModel extends AbstractBaseEntity<DbColumnModelDto, DbColumnModel> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "table_id")
     private DbTableModel table;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "column_category_id")
     private DbColumnCategory columnCategory;
 

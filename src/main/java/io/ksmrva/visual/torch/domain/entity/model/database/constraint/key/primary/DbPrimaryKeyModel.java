@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_primary_key_model", schema = "model")
+@Table(name = "primary_key_model", schema = "db_model")
 public class DbPrimaryKeyModel extends AbstractBaseEntity<DbPrimaryKeyModelDto, DbPrimaryKeyModel> {
 
     @Column(name = "name")

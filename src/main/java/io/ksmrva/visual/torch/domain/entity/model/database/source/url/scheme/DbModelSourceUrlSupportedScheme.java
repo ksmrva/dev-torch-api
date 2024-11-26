@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_model_source_url_supported_scheme", schema = "model")
+@Table(name = "source_url_supported_scheme", schema = "db_model")
 public class DbModelSourceUrlSupportedScheme extends AbstractBaseEntity<DbModelSourceUrlSupportedSchemeDto, DbModelSourceUrlSupportedScheme> {
 
     @Column(name = "scheme")

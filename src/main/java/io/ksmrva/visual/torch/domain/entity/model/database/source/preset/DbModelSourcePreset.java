@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_model_source_preset", schema = "model")
+@Table(name = "source_preset", schema = "db_model")
 public class DbModelSourcePreset extends AbstractBaseEntity<DbModelSourcePresetDto, DbModelSourcePreset> {
 
     @Column(name = "name")

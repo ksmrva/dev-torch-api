@@ -6,7 +6,6 @@ import io.ksmrva.visual.torch.domain.entity.AbstractBaseEntity;
 import io.ksmrva.visual.torch.domain.entity.canvas.cell.CanvasCell;
 import io.ksmrva.visual.torch.domain.entity.canvas.cell.CanvasCustomCell;
 import io.ksmrva.visual.torch.domain.entity.canvas.cell.CanvasLinkCell;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -33,7 +32,6 @@ public class Canvas extends AbstractBaseEntity<CanvasDto, Canvas> {
     @Column(name = "background_color")
     private String backgroundColor;
 
-    @Nullable
     @OneToMany(mappedBy = "canvasId",
                cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<CanvasCell<?, ?>> cells;

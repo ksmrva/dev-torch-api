@@ -10,14 +10,14 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_primary_key_column_model", schema = "model")
+@Table(name = "primary_key_column_model", schema = "db_model")
 public class DbPrimaryKeyColumnModel extends AbstractBaseEntity<DbPrimaryKeyColumnModelDto, DbPrimaryKeyColumnModel> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "primary_key_id")
     private DbPrimaryKeyModel primaryKey;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "column_id")
     private DbColumnModel column;
 

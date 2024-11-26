@@ -8,10 +8,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_model_source_config", schema = "model")
+@Table(name = "source_config", schema = "db_model")
 public class DbModelSourceConfig extends AbstractBaseEntity<DbModelSourceConfigDto, DbModelSourceConfig> {
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "source_url_id")
     private DbModelSourceUrl sourceUrl;
 
@@ -29,7 +29,8 @@ public class DbModelSourceConfig extends AbstractBaseEntity<DbModelSourceConfigD
         DbModelSourceConfigDto dto = super.createDtoWithBaseValues(DbModelSourceConfigDto::new);
 
         if (this.getSourceUrl() != null) {
-            dto.setUrl(this.getSourceUrl().convertToDto());
+            dto.setUrl(this.getSourceUrl()
+                           .convertToDto());
         }
 
         dto.setDriverName(this.getDriverName());

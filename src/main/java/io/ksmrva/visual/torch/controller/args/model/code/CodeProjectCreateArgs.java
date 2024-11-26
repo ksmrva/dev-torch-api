@@ -1,6 +1,6 @@
 package io.ksmrva.visual.torch.controller.args.model.code;
 
-public class CodeRepositoryProjectDirectoryDescription {
+public class CodeProjectCreateArgs {
 
     private final String projectName;
 
@@ -8,7 +8,7 @@ public class CodeRepositoryProjectDirectoryDescription {
 
     private final FileExtensionMatcher fileExtensionMatcher;
 
-    public CodeRepositoryProjectDirectoryDescription(String projectName, String directoryPath, FileExtensionMatcher fileExtensionMatcher) {
+    public CodeProjectCreateArgs(String projectName, String directoryPath, FileExtensionMatcher fileExtensionMatcher) {
         this.projectName = projectName;
         this.directoryPath = directoryPath;
         this.fileExtensionMatcher = fileExtensionMatcher;

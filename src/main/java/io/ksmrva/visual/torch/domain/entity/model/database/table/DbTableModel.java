@@ -20,14 +20,14 @@ import java.util.List;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_table_model", schema = "model")
+@Table(name = "table_model", schema = "db_model")
 public class DbTableModel extends AbstractBaseEntity<DbTableModelDto, DbTableModel> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "database_id")
     private DbModel database;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "table_category_id")
     private DbTableCategory tableCategory;
 
@@ -37,17 +37,14 @@ public class DbTableModel extends AbstractBaseEntity<DbTableModelDto, DbTableMod
     @Column(name = "description")
     private String description;
 
-    @Nullable
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "table",
                cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<DbColumnModel> columns;
 
-    @Nullable
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "table",
               cascade = {CascadeType.ALL}, orphanRemoval = true)
     private DbPrimaryKeyModel primaryKey;
 
-    @Nullable
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "table",
                cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<DbForeignKeyModel> foreignKeys;

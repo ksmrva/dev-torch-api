@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_model_source_url", schema = "model")
+@Table(name = "source_url", schema = "db_model")
 public class DbModelSourceUrl extends AbstractBaseEntity<DbModelSourceUrlDto, DbModelSourceUrl> {
 
     @Column(name = "scheme")
@@ -26,8 +26,8 @@ public class DbModelSourceUrl extends AbstractBaseEntity<DbModelSourceUrlDto, Db
     @Column(name = "port")
     private String port;
 
-    @Column(name = "maintenance_database_name")
-    private String maintenanceDatabaseName;
+    @Column(name = "admin_db_name")
+    private String adminDatabaseName;
 
     @Override
     public DbModelSourceUrlDto convertToDto() {
@@ -36,7 +36,7 @@ public class DbModelSourceUrl extends AbstractBaseEntity<DbModelSourceUrlDto, Db
         dto.setProvider(this.getProvider());
         dto.setHostname(this.getHostname());
         dto.setPort(this.getPort());
-        dto.setMaintenanceDatabaseName(this.getMaintenanceDatabaseName());
+        dto.setAdminDatabaseName(this.getAdminDatabaseName());
 
         return dto;
     }
@@ -73,12 +73,12 @@ public class DbModelSourceUrl extends AbstractBaseEntity<DbModelSourceUrlDto, Db
         this.port = port;
     }
 
-    public String getMaintenanceDatabaseName() {
-        return maintenanceDatabaseName;
+    public String getAdminDatabaseName() {
+        return adminDatabaseName;
     }
 
-    public void setMaintenanceDatabaseName(String maintenanceDatabaseName) {
-        this.maintenanceDatabaseName = maintenanceDatabaseName;
+    public void setAdminDatabaseName(String adminDatabaseName) {
+        this.adminDatabaseName = adminDatabaseName;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class DbModelSourceUrl extends AbstractBaseEntity<DbModelSourceUrlDto, Db
                                   .append(getProvider(), that.getProvider())
                                   .append(getHostname(), that.getHostname())
                                   .append(getPort(), that.getPort())
-                                  .append(getMaintenanceDatabaseName(), that.getMaintenanceDatabaseName())
+                                  .append(getAdminDatabaseName(), that.getAdminDatabaseName())
                                   .isEquals();
     }
 
@@ -108,17 +108,17 @@ public class DbModelSourceUrl extends AbstractBaseEntity<DbModelSourceUrlDto, Db
                 .append(getProvider())
                 .append(getHostname())
                 .append(getPort())
-                .append(getMaintenanceDatabaseName())
+                .append(getAdminDatabaseName())
                 .toHashCode();
     }
 
-    public static DbModelSourceUrl build(String scheme, String provider, String hostname, String port, String maintenanceDatabaseName) {
+    public static DbModelSourceUrl build(String scheme, String provider, String hostname, String port, String adminDatabaseName) {
         DbModelSourceUrl sourceUrl = new DbModelSourceUrl();
         sourceUrl.setScheme(scheme);
         sourceUrl.setProvider(provider);
         sourceUrl.setHostname(hostname);
         sourceUrl.setPort(port);
-        sourceUrl.setMaintenanceDatabaseName(maintenanceDatabaseName);
+        sourceUrl.setAdminDatabaseName(adminDatabaseName);
 
         return sourceUrl;
     }

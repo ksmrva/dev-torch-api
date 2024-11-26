@@ -15,7 +15,7 @@ public class DbModelSourceUrlDto extends AbstractBaseDto<DbModelSourceUrlDto, Db
 
     private String port;
 
-    private String maintenanceDatabaseName;
+    private String adminDatabaseName;
 
     @Override
     public DbModelSourceUrl convertToEntity() {
@@ -24,7 +24,7 @@ public class DbModelSourceUrlDto extends AbstractBaseDto<DbModelSourceUrlDto, Db
         entity.setProvider(this.getProvider());
         entity.setHostname(this.getHostname());
         entity.setPort(this.getPort());
-        entity.setMaintenanceDatabaseName(this.getMaintenanceDatabaseName());
+        entity.setAdminDatabaseName(this.getAdminDatabaseName());
 
         return entity;
     }
@@ -61,16 +61,16 @@ public class DbModelSourceUrlDto extends AbstractBaseDto<DbModelSourceUrlDto, Db
         this.port = port;
     }
 
-    public String getMaintenanceDatabaseName() {
-        return maintenanceDatabaseName;
+    public String getAdminDatabaseName() {
+        return adminDatabaseName;
     }
 
-    public void setMaintenanceDatabaseName(String maintenanceDatabaseName) {
-        this.maintenanceDatabaseName = maintenanceDatabaseName;
+    public void setAdminDatabaseName(String adminDatabaseName) {
+        this.adminDatabaseName = adminDatabaseName;
     }
 
     public String getFullyFormedUrl() {
-        return DbModelSourceUrlDto.createFullyFormedUrl(scheme, provider, hostname, port, maintenanceDatabaseName);
+        return DbModelSourceUrlDto.createFullyFormedUrl(scheme, provider, hostname, port, adminDatabaseName);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class DbModelSourceUrlDto extends AbstractBaseDto<DbModelSourceUrlDto, Db
                                   .append(getProvider(), that.getProvider())
                                   .append(getHostname(), that.getHostname())
                                   .append(getPort(), that.getPort())
-                                  .append(getMaintenanceDatabaseName(), that.getMaintenanceDatabaseName())
+                                  .append(getAdminDatabaseName(), that.getAdminDatabaseName())
                                   .isEquals();
     }
 
@@ -100,23 +100,23 @@ public class DbModelSourceUrlDto extends AbstractBaseDto<DbModelSourceUrlDto, Db
                 .append(getProvider())
                 .append(getHostname())
                 .append(getPort())
-                .append(getMaintenanceDatabaseName())
+                .append(getAdminDatabaseName())
                 .toHashCode();
     }
 
-    public static DbModelSourceUrlDto build(String scheme, String provider, String hostname, String port, String maintenanceDatabaseName) {
+    public static DbModelSourceUrlDto build(String scheme, String provider, String hostname, String port, String adminDatabaseName) {
         DbModelSourceUrlDto sourceUrlDto = new DbModelSourceUrlDto();
         sourceUrlDto.setScheme(scheme);
         sourceUrlDto.setProvider(provider);
         sourceUrlDto.setHostname(hostname);
         sourceUrlDto.setPort(port);
-        sourceUrlDto.setMaintenanceDatabaseName(maintenanceDatabaseName);
+        sourceUrlDto.setAdminDatabaseName(adminDatabaseName);
 
         return sourceUrlDto;
     }
 
-    public static String createFullyFormedUrl(String scheme, String provider, String hostname, String port, String maintenanceDatabaseName) {
-        return scheme + ":" + provider + "://" + hostname + ":" + port + "/" + maintenanceDatabaseName;
+    public static String createFullyFormedUrl(String scheme, String provider, String hostname, String port, String adminDatabaseName) {
+        return scheme + ":" + provider + "://" + hostname + ":" + port + "/" + adminDatabaseName;
     }
 
 }

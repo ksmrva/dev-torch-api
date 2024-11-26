@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
 @JsonSubTypes({@JsonSubTypes.Type(value = CanvasCustomCellDto.class, name = "custom"),
-               @JsonSubTypes.Type(value = CanvasLinkCellDto.class, name = "link"),})
+               @JsonSubTypes.Type(value = CanvasLinkCellDto.class, name = "link")})
 public abstract class CanvasCellDto<D extends CanvasCellDto<D, E>, E extends CanvasCell<D, E>> extends AbstractBaseDto<D, E> {
 
     private BigInteger canvasId;

@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_foreign_key_model", schema = "model")
+@Table(name = "foreign_key_model", schema = "db_model")
 public class DbForeignKeyModel extends AbstractBaseEntity<DbForeignKeyModelDto, DbForeignKeyModel> {
 
     @Column(name = "name")

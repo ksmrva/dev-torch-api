@@ -12,7 +12,7 @@ kubectl -n postgresql create secret generic postgresql --from-literal POSTGRES_U
 // String provider = "postgresql";
 // String hostname = "localhost";
 // String port = "5432";
-// String maintenanceDatabaseName = "postgres";
+// String adminDbName = "postgres";
 // String jdbcUrl = urlScheme + ":" + provider + "://" + hostname + ":" + port + "/" + databaseName;
 // String driverName = "org.postgresql.Driver";
 // String username = "postgresadmin";
@@ -22,7 +22,7 @@ kubectl -n postgresql create secret generic postgresql --from-literal POSTGRES_U
   "provider": "postgresql",
   "hostname": "localhost",
   "port": "5432",
-  "maintenanceDatabaseName": "postgres"
+  "adminDbName": "postgres"
 }
 
 {
@@ -46,21 +46,40 @@ SELECT * FROM canvas.canvas_custom_cell;
 SELECT * FROM canvas.canvas_cell;
 SELECT * FROM canvas.canvas;
 
-SELECT * FROM model.database_model_foreign_key;
-SELECT * FROM model.database_model_primary_key_column;
-SELECT * FROM model.database_model_primary_key;
-SELECT * FROM model.database_model_column;
-SELECT * FROM model.database_model_column_category;
-SELECT * FROM model.database_model_table;
-SELECT * FROM model.database_model_table_category;
-SELECT * FROM model.database_model;
-SELECT * FROM model.database_model_data_type;
-SELECT * FROM model.database_model_source_config;
-SELECT * FROM model.database_model_source_url;
-SELECT * FROM model.db_model_source_preset;
-SELECT * FROM model.db_model_source_url_supported_provider;
-SELECT * FROM model.db_model_source_url_supported_scheme;
-SELECT * FROM model.db_model_source_config_supported_driver;
+SELECT * FROM db_model.foreign_key_model;
+SELECT * FROM db_model.primary_key_column_model;
+SELECT * FROM db_model.primary_key_model;
+SELECT * FROM db_model.column_model;
+SELECT * FROM db_model.column_category;
+SELECT * FROM db_model.table_model;
+SELECT * FROM db_model.table_category;
+SELECT * FROM db_model.db_model;
+SELECT * FROM db_model.db_data_type;
+SELECT * FROM db_model.source_config;
+SELECT * FROM db_model.source_url;
+SELECT * FROM db_model.source_preset;
+SELECT * FROM db_model.source_url_supported_provider;
+SELECT * FROM db_model.source_url_supported_scheme;
+SELECT * FROM db_model.source_config_supported_driver;
+
+
+-- delete from code_model.text_file_extension;
+delete from code_model.project;
+delete from code_model.text_file;
+delete from code_model.data_file;
+delete from code_model.directory_file;
+delete from code_model.file;
+delete from code_model.file_node;
+-- delete from code_model.file_type;
+
+select * from code_model.project;
+select * from code_model.text_file_extension;
+select * from code_model.text_file;
+select * from code_model.data_file;
+select * from code_model.directory_file;
+select * from code_model.file;
+select * from code_model.file_node;
+select * from code_model.file_type;
 
 ----------------------------------------
 
@@ -71,28 +90,28 @@ DROP TABLE IF EXISTS canvas.canvas;
 
 DROP SCHEMA IF EXISTS canvas;
 
-DROP TABLE IF EXISTS model.db_foreign_key_model;
-DROP TABLE IF EXISTS model.db_primary_key_column_model;
-DROP TABLE IF EXISTS model.db_primary_key_model;
-DROP TABLE IF EXISTS model.db_column_model;
-DROP TABLE IF EXISTS model.db_column_category;
-DROP TABLE IF EXISTS model.db_table_model;
-DROP TABLE IF EXISTS model.db_table_category;
-DROP TABLE IF EXISTS model.db_model;
-DROP TABLE IF EXISTS model.db_data_type;
-DROP TABLE IF EXISTS model.db_model_source_config;
-DROP TABLE IF EXISTS model.db_model_source_url;
-DROP TABLE IF EXISTS model.db_model_source_preset;
-DROP TABLE IF EXISTS model.db_model_source_url_supported_provider;
-DROP TABLE IF EXISTS model.db_model_source_url_supported_scheme;
-DROP TABLE IF EXISTS model.db_model_source_config_supported_driver;
+DROP TABLE IF EXISTS db_model.foreign_key_model;
+DROP TABLE IF EXISTS db_model.primary_key_column_model;
+DROP TABLE IF EXISTS db_model.primary_key_model;
+DROP TABLE IF EXISTS db_model.column_model;
+DROP TABLE IF EXISTS db_model.column_category;
+DROP TABLE IF EXISTS db_model.table_model;
+DROP TABLE IF EXISTS db_model.table_category;
+DROP TABLE IF EXISTS db_model.db_model;
+DROP TABLE IF EXISTS db_model.db_data_type;
+DROP TABLE IF EXISTS db_model.source_config;
+DROP TABLE IF EXISTS db_model.source_url;
+DROP TABLE IF EXISTS db_model.source_preset;
+DROP TABLE IF EXISTS db_model.source_url_supported_provider;
+DROP TABLE IF EXISTS db_model.source_url_supported_scheme;
+DROP TABLE IF EXISTS db_model.source_config_supported_driver;
 
-DROP SCHEMA IF EXISTS model;
+DROP SCHEMA IF EXISTS db_model;
 
 
 SELECT t.name, c.name, c.column_index, d.name, category.name
-FROM dbmodel.database_model_table t
-JOIN dbmodel.database_model_column as c ON t.id = c.table_model_id
-JOIN dbmodel.database_model_data_type as d ON d.id = c.data_type_id
-JOIN dbmodel.database_model_column_category as category ON category.id = c.column_category_id
+FROM db_model.table_model t
+JOIN db_model.column_model as c ON t.id = c.table_model_id
+JOIN db_model.db_data_type as d ON d.id = c.data_type_id
+JOIN db_model.column_category as category ON category.id = c.column_category_id
 order by t.name, c.column_index asc;

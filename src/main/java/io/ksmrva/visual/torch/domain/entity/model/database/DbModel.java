@@ -7,7 +7,6 @@ import io.ksmrva.visual.torch.domain.dto.model.database.table.DbTableModelDto;
 import io.ksmrva.visual.torch.domain.entity.AbstractBaseEntity;
 import io.ksmrva.visual.torch.domain.entity.model.database.source.config.DbModelSourceConfig;
 import io.ksmrva.visual.torch.domain.entity.model.database.table.DbTableModel;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -19,10 +18,10 @@ import java.util.List;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_model", schema = "model")
+@Table(name = "db_model", schema = "db_model")
 public class DbModel extends AbstractBaseEntity<DbModelDto, DbModel> {
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "source_config_id")
     private DbModelSourceConfig sourceConfig;
 
@@ -35,7 +34,6 @@ public class DbModel extends AbstractBaseEntity<DbModelDto, DbModel> {
     @Column(name = "description")
     private String description;
 
-    @Nullable
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "database",
                cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<DbTableModel> tables;

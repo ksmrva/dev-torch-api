@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "db_model_source_config_supported_driver", schema = "model")
+@Table(name = "source_config_supported_driver", schema = "db_model")
 public class DbModelSourceConfigSupportedDriver extends AbstractBaseEntity<DbModelSourceConfigSupportedDriverDto, DbModelSourceConfigSupportedDriver> {
 
     @Column(name = "name")
