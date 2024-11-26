@@ -1,4 +1,4 @@
-package io.ksmrva.visual.torch.controller.args.model.code;
+package io.ksmrva.visual.torch.api.args.model.code;
 
 public enum CodeRepositoryType {
     LOCAL_DIRECTORY,

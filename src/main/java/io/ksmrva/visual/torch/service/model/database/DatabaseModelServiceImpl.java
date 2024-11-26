@@ -1,6 +1,6 @@
 package io.ksmrva.visual.torch.service.model.database;
 
-import io.ksmrva.visual.torch.controller.args.misc.RegexMatcher;
+import io.ksmrva.visual.torch.api.args.misc.RegexMatcher;
 import io.ksmrva.visual.torch.db.dao.model.database.DatabaseModelDao;
 import io.ksmrva.visual.torch.domain.dto.model.database.DbModelDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.name.DbModelNameDto;

@@ -1,4 +1,4 @@
-package io.ksmrva.visual.torch.controller.args.model.code;
+package io.ksmrva.visual.torch.api.args.model.code;
 
 import org.apache.commons.lang3.StringUtils;
 

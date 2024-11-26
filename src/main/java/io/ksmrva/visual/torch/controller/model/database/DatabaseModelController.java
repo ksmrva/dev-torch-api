@@ -1,8 +1,8 @@
 package io.ksmrva.visual.torch.controller.model.database;
 
 import io.ksmrva.visual.torch.controller.AbstractApiController;
-import io.ksmrva.visual.torch.controller.args.misc.RegexMatcher;
-import io.ksmrva.visual.torch.controller.args.model.database.DbModelCreateArgs;
+import io.ksmrva.visual.torch.api.args.misc.RegexMatcher;
+import io.ksmrva.visual.torch.api.args.model.database.DbModelCreateArgs;
 import io.ksmrva.visual.torch.domain.dto.model.database.DbModelDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.column.DbColumnCategoryDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.column.DbColumnModelDto;

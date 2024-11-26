@@ -1,4 +1,4 @@
-package io.ksmrva.visual.torch.controller.args.model.database.source;
+package io.ksmrva.visual.torch.api.args.model.database.source;
 
 import java.math.BigInteger;
 

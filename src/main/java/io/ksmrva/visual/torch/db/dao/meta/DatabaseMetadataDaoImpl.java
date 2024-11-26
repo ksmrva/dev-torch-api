@@ -1,7 +1,7 @@
-package io.ksmrva.visual.torch.db.meta;
+package io.ksmrva.visual.torch.db.dao.meta;
 
+import io.ksmrva.visual.torch.db.dao.meta.helper.sql.*;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.DbModelSourceConfigDto;
-import io.ksmrva.visual.torch.domain.meta.sql.*;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.stereotype.Repository;
 

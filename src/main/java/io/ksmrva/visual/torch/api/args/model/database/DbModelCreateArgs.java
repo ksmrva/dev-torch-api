@@ -1,6 +1,6 @@
-package io.ksmrva.visual.torch.controller.args.model.database;
+package io.ksmrva.visual.torch.api.args.model.database;
 
-import io.ksmrva.visual.torch.controller.args.misc.RegexMatcher;
+import io.ksmrva.visual.torch.api.args.misc.RegexMatcher;
 import io.ksmrva.visual.torch.domain.dto.model.database.column.DbColumnCategoryDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.name.DbModelNameDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.table.DbTableCategoryDto;

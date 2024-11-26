@@ -1,4 +1,4 @@
-package io.ksmrva.visual.torch.domain.meta.sql;
+package io.ksmrva.visual.torch.db.dao.meta.helper.sql;
 
 import java.util.List;
 import java.util.Map;

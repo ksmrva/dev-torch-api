@@ -1,8 +1,9 @@
 package io.ksmrva.visual.torch.db.dao.model.database;
 
-import io.ksmrva.visual.torch.controller.args.misc.RegexMatcher;
+import io.ksmrva.visual.torch.api.args.misc.RegexMatcher;
+import io.ksmrva.visual.torch.db.dao.meta.helper.sql.*;
 import io.ksmrva.visual.torch.db.dao.model.database.source.DatabaseModelSourceDaoImpl;
-import io.ksmrva.visual.torch.db.meta.DatabaseMetadataDaoImpl;
+import io.ksmrva.visual.torch.db.dao.meta.DatabaseMetadataDaoImpl;
 import io.ksmrva.visual.torch.domain.dto.DtoFactory;
 import io.ksmrva.visual.torch.domain.dto.model.database.DbModelDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.column.DbColumnCategoryDto;
@@ -22,7 +23,6 @@ import io.ksmrva.visual.torch.domain.entity.model.database.data.DbDataType;
 import io.ksmrva.visual.torch.domain.entity.model.database.source.config.DbModelSourceConfig;
 import io.ksmrva.visual.torch.domain.entity.model.database.table.DbTableCategory;
 import io.ksmrva.visual.torch.domain.entity.model.database.table.DbTableModel;
-import io.ksmrva.visual.torch.domain.meta.sql.*;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.transaction.Transactional;

@@ -1,4 +1,4 @@
-package io.ksmrva.visual.torch.domain.meta.sql;
+package io.ksmrva.visual.torch.db.dao.meta.helper.sql;
 
 public class ColumnSqlMetadata {
 

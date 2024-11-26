@@ -1,4 +1,4 @@
-package io.ksmrva.visual.torch.controller.args.model.code;
+package io.ksmrva.visual.torch.api.args.model.code;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

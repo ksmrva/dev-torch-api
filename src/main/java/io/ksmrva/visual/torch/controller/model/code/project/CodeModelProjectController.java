@@ -1,7 +1,7 @@
 package io.ksmrva.visual.torch.controller.model.code.project;
 
 import io.ksmrva.visual.torch.controller.AbstractApiController;
-import io.ksmrva.visual.torch.controller.args.model.code.CodeProjectCreateArgs;
+import io.ksmrva.visual.torch.api.args.model.code.CodeProjectCreateArgs;
 import io.ksmrva.visual.torch.domain.dto.model.code.project.CodeProjectDto;
 import io.ksmrva.visual.torch.service.model.code.project.CodeModelProjectService;
 import org.apache.logging.log4j.LogManager;

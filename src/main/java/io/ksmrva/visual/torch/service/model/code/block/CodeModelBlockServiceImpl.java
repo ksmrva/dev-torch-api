@@ -1,8 +1,8 @@
 package io.ksmrva.visual.torch.service.model.code.block;
 
-import io.ksmrva.visual.torch.controller.args.model.code.CodeProjectCreateArgs;
-import io.ksmrva.visual.torch.controller.args.model.code.CodeRepositoryDirectory;
-import io.ksmrva.visual.torch.controller.args.model.code.FileExtensionMatcher;
+import io.ksmrva.visual.torch.api.args.model.code.CodeProjectCreateArgs;
+import io.ksmrva.visual.torch.api.args.model.code.CodeRepositoryDirectory;
+import io.ksmrva.visual.torch.api.args.model.code.FileExtensionMatcher;
 import io.ksmrva.visual.torch.domain.dto.model.code.file.CodeFileDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.file.type.data.CodeDataFileDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.file.type.directory.CodeDirectoryFileDto;
