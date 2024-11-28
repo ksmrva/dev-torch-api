@@ -2,7 +2,7 @@ package io.ksmrva.visual.torch.service.model.database.source;
 
 import io.ksmrva.visual.torch.db.dao.model.database.source.DatabaseModelSourceDao;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.DbModelSourceConfigDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.source.driver.DbModelSourceConfigSupportedDriverDto;
+import io.ksmrva.visual.torch.domain.dto.model.database.source.config.driver.DbModelSourceConfigSupportedDriverDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.preset.DbModelSourcePresetDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.url.DbModelSourceUrlDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.url.provider.DbModelSourceUrlSupportedProviderDto;

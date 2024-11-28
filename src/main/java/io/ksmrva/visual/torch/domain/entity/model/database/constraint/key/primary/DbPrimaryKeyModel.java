@@ -24,7 +24,7 @@ public class DbPrimaryKeyModel extends AbstractBaseEntity<DbPrimaryKeyModelDto, 
     @Column(name = "description")
     private String description;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "table_id")
     private DbTableModel table;
 
@@ -65,12 +65,12 @@ public class DbPrimaryKeyModel extends AbstractBaseEntity<DbPrimaryKeyModelDto, 
         this.description = description;
     }
 
-    public DbTableModel getTableModel() {
+    public DbTableModel getTable() {
         return table;
     }
 
-    public void setTableModel(DbTableModel dbTableModel) {
-        this.table = dbTableModel;
+    public void setTable(DbTableModel table) {
+        this.table = table;
     }
 
     public List<DbPrimaryKeyColumnModel> getPrimaryKeyColumns() {
@@ -94,7 +94,7 @@ public class DbPrimaryKeyModel extends AbstractBaseEntity<DbPrimaryKeyModelDto, 
         return new EqualsBuilder().appendSuper(super.equals(o))
                                   .append(getName(), that.getName())
                                   .append(getDescription(), that.getDescription())
-                                  .append(table, that.table)
+                                  .append(getTable(), that.getTable())
                                   .append(getPrimaryKeyColumns(), that.getPrimaryKeyColumns())
                                   .isEquals();
     }
@@ -105,7 +105,7 @@ public class DbPrimaryKeyModel extends AbstractBaseEntity<DbPrimaryKeyModelDto, 
                 .appendSuper(super.hashCode())
                 .append(getName())
                 .append(getDescription())
-                .append(table)
+                .append(getTable())
                 .append(getPrimaryKeyColumns())
                 .toHashCode();
     }

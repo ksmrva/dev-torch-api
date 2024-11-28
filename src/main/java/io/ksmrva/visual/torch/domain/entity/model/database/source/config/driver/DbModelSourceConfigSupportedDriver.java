@@ -1,6 +1,6 @@
-package io.ksmrva.visual.torch.domain.entity.model.database.source.driver;
+package io.ksmrva.visual.torch.domain.entity.model.database.source.config.driver;
 
-import io.ksmrva.visual.torch.domain.dto.model.database.source.driver.DbModelSourceConfigSupportedDriverDto;
+import io.ksmrva.visual.torch.domain.dto.model.database.source.config.driver.DbModelSourceConfigSupportedDriverDto;
 import io.ksmrva.visual.torch.domain.entity.AbstractBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

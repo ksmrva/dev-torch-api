@@ -41,7 +41,7 @@ public class CanvasDaoImpl implements CanvasDao {
         Assert.notNull(canvasDtoToCreate, "Was provided a null Canvas to create");
         Canvas canvas = DtoFactory.toEntity(canvasDtoToCreate);
         this.sessionFactory.getCurrentSession()
-                .persist(canvas);
+                           .persist(canvas);
 
         return DtoFactory.fromEntity(canvas);
     }
@@ -61,8 +61,8 @@ public class CanvasDaoImpl implements CanvasDao {
         List<String> canvasNamesQueryResult;
         try {
             canvasNamesQueryResult = this.sessionFactory.getCurrentSession()
-                    .createSelectionQuery("SELECT name FROM Canvas", String.class)
-                    .getResultList();
+                                                        .createSelectionQuery("SELECT name FROM Canvas", String.class)
+                                                        .getResultList();
         } catch (NoResultException e) {
             LOGGER.warn("Found no Canvas Names", e);
             canvasNamesQueryResult = new ArrayList<>();
@@ -75,8 +75,8 @@ public class CanvasDaoImpl implements CanvasDao {
         List<Canvas> canvasesQueryResult;
         try {
             canvasesQueryResult = this.sessionFactory.getCurrentSession()
-                    .createSelectionQuery("from Canvas", Canvas.class)
-                    .getResultList();
+                                                     .createSelectionQuery("from Canvas", Canvas.class)
+                                                     .getResultList();
         } catch (NoResultException e) {
             LOGGER.warn("Found no Canvases", e);
             canvasesQueryResult = new ArrayList<>();
@@ -93,7 +93,7 @@ public class CanvasDaoImpl implements CanvasDao {
         Assert.notNull(canvasDtoToUpdate, "Was provided a null Canvas to update");
         Canvas canvas = DtoFactory.toEntity(canvasDtoToUpdate);
         this.sessionFactory.getCurrentSession()
-                .merge(canvas);
+                           .merge(canvas);
 
         return DtoFactory.fromEntity(canvas);
     }
@@ -103,7 +103,7 @@ public class CanvasDaoImpl implements CanvasDao {
         Assert.notNull(customCellDtoToUpdate, "Was provided a null Canvas Custom Cell to update");
         CanvasCustomCell customCell = DtoFactory.toEntity(customCellDtoToUpdate);
         this.sessionFactory.getCurrentSession()
-                .merge(customCell);
+                           .merge(customCell);
 
         return DtoFactory.fromEntity(customCell);
     }
@@ -113,7 +113,7 @@ public class CanvasDaoImpl implements CanvasDao {
         Assert.notNull(linkCellDtoToUpdate, "Was provided a null Canvas Link Cell to update");
         CanvasLinkCell linkCell = DtoFactory.toEntity(linkCellDtoToUpdate);
         this.sessionFactory.getCurrentSession()
-                .merge(linkCell);
+                           .merge(linkCell);
 
         return DtoFactory.fromEntity(linkCell);
     }
@@ -129,7 +129,7 @@ public class CanvasDaoImpl implements CanvasDao {
         Assert.notNull(canvasToDelete, "Could not find the Canvas with name [" + canvasName + "] for deletion");
 
         this.sessionFactory.getCurrentSession()
-                .remove(canvasToDelete);
+                           .remove(canvasToDelete);
     }
 
     /**
@@ -139,9 +139,9 @@ public class CanvasDaoImpl implements CanvasDao {
         Canvas canvasQueryResult = null;
         try {
             canvasQueryResult = this.sessionFactory.getCurrentSession()
-                    .createSelectionQuery("from Canvas where name=:canvasName", Canvas.class)
-                    .setParameter("canvasName", canvasName)
-                    .getSingleResult();
+                                                   .createSelectionQuery("from Canvas where name=:canvasName", Canvas.class)
+                                                   .setParameter("canvasName", canvasName)
+                                                   .getSingleResult();
         } catch (NoResultException e) {
             LOGGER.warn("No result found for Canvas with name [" + canvasName + "]", e);
         } catch (NonUniqueResultException e) {

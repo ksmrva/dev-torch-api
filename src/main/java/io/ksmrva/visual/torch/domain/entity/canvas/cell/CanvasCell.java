@@ -35,9 +35,9 @@ public class CanvasCell<D extends CanvasCellDto<D, E>, E extends CanvasCell<D, E
         D dto = null;
         if (dtoSupplier != null) {
             dto = super.createDtoWithBaseValues(dtoSupplier);
-            this.setCanvasId(dto.getCanvasId());
-            this.setName(dto.getName());
-            this.setLocalName(dto.getLocalName());
+            dto.setCanvasId(this.getCanvasId());
+            dto.setName(this.getName());
+            dto.setLocalName(this.getLocalName());
         }
         return dto;
     }

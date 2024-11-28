@@ -1,9 +1,9 @@
 package io.ksmrva.visual.torch.db.dao.model.database;
 
 import io.ksmrva.visual.torch.api.args.misc.RegexMatcher;
+import io.ksmrva.visual.torch.db.dao.meta.DatabaseMetadataDaoImpl;
 import io.ksmrva.visual.torch.db.dao.meta.helper.sql.*;
 import io.ksmrva.visual.torch.db.dao.model.database.source.DatabaseModelSourceDaoImpl;
-import io.ksmrva.visual.torch.db.dao.meta.DatabaseMetadataDaoImpl;
 import io.ksmrva.visual.torch.domain.dto.DtoFactory;
 import io.ksmrva.visual.torch.domain.dto.model.database.DbModelDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.column.DbColumnCategoryDto;
@@ -389,7 +389,6 @@ public class DatabaseModelDaoImpl implements DatabaseModelDao {
                 tableCategory = this.getUndefinedTableCategory();
             }
             tableModel.setTableCategory(tableCategory);
-
             this.sessionFactory.getCurrentSession()
                                .persist(tableModel);
 
@@ -408,7 +407,7 @@ public class DatabaseModelDaoImpl implements DatabaseModelDao {
 
             PrimaryKeySqlMetadata primaryKeySqlMetadata = tableMetadata.getPrimaryKeySqlMetadata();
             DbPrimaryKeyModel primaryKeyModel = this.createPrimaryKeyModel(primaryKeySqlMetadata, createdColumnModelsByName);
-            primaryKeyModel.setTableModel(tableModel);
+            primaryKeyModel.setTable(tableModel);
             tableModel.setPrimaryKey(primaryKeyModel);
             this.sessionFactory.getCurrentSession()
                                .persist(primaryKeyModel);

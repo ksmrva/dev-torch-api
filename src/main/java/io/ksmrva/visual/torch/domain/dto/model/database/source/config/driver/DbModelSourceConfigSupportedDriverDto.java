@@ -1,7 +1,7 @@
-package io.ksmrva.visual.torch.domain.dto.model.database.source.driver;
+package io.ksmrva.visual.torch.domain.dto.model.database.source.config.driver;
 
 import io.ksmrva.visual.torch.domain.dto.AbstractBaseDto;
-import io.ksmrva.visual.torch.domain.entity.model.database.source.driver.DbModelSourceConfigSupportedDriver;
+import io.ksmrva.visual.torch.domain.entity.model.database.source.config.driver.DbModelSourceConfigSupportedDriver;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

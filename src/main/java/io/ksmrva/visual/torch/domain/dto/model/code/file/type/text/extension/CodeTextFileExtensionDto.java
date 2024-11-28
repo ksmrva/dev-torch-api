@@ -1,4 +1,4 @@
-package io.ksmrva.visual.torch.domain.dto.model.code.file.type.text;
+package io.ksmrva.visual.torch.domain.dto.model.code.file.type.text.extension;
 
 import io.ksmrva.visual.torch.domain.dto.AbstractBaseDto;
 import io.ksmrva.visual.torch.domain.entity.model.code.file.type.text.extension.CodeTextFileExtension;

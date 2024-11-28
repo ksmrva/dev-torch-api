@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@DynamicUpdate
 @Table(name = "db_model", schema = "db_model")
 public class DbModel extends AbstractBaseEntity<DbModelDto, DbModel> {
 

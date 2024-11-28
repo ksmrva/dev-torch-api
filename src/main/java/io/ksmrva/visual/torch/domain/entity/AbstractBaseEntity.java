@@ -93,9 +93,8 @@ public abstract class AbstractBaseEntity<D extends AbstractBaseDto<D, E>, E exte
         if (!(o instanceof AbstractBaseEntity<?, ?> that)) {
             return false;
         }
-
-        return new EqualsBuilder().append(getId(), that.getId())
-                                  .append(getCreatedUid(), that.getCreatedUid())
+        // Do not consider Database-only/generated values, such as id, within the equals() contract
+        return new EqualsBuilder().append(getCreatedUid(), that.getCreatedUid())
                                   .append(getCreatedDate(), that.getCreatedDate())
                                   .append(getModifiedUid(), that.getModifiedUid())
                                   .append(getModifiedDate(), that.getModifiedDate())
@@ -104,8 +103,8 @@ public abstract class AbstractBaseEntity<D extends AbstractBaseDto<D, E>, E exte
 
     @Override
     public int hashCode() {
+        // Do not consider Database-only/generated values, such as id, within the hashCode() contract
         return new HashCodeBuilder(17, 37)
-                .append(getId())
                 .append(getCreatedUid())
                 .append(getCreatedDate())
                 .append(getModifiedUid())

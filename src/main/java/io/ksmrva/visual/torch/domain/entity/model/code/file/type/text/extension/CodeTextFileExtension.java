@@ -1,6 +1,6 @@
 package io.ksmrva.visual.torch.domain.entity.model.code.file.type.text.extension;
 
-import io.ksmrva.visual.torch.domain.dto.model.code.file.type.text.CodeTextFileExtensionDto;
+import io.ksmrva.visual.torch.domain.dto.model.code.file.type.text.extension.CodeTextFileExtensionDto;
 import io.ksmrva.visual.torch.domain.entity.AbstractBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

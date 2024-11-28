@@ -66,7 +66,7 @@ public class CanvasCustomCell extends CanvasCell<CanvasCustomCellDto, CanvasCust
         this.height = height;
     }
 
-    public int getCanvasPositionX() {
+    public Integer getCanvasPositionX() {
         return canvasPositionX;
     }
 
@@ -74,7 +74,7 @@ public class CanvasCustomCell extends CanvasCell<CanvasCustomCellDto, CanvasCust
         this.canvasPositionX = canvasPositionX;
     }
 
-    public int getCanvasPositionY() {
+    public Integer getCanvasPositionY() {
         return canvasPositionY;
     }
 

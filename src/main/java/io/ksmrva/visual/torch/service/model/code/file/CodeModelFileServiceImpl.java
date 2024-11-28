@@ -7,7 +7,7 @@ import io.ksmrva.visual.torch.domain.dto.model.code.file.type.CodeFileTypeDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.file.type.data.CodeDataFileDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.file.type.directory.CodeDirectoryFileDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.file.type.text.CodeTextFileDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.file.type.text.CodeTextFileExtensionDto;
+import io.ksmrva.visual.torch.domain.dto.model.code.file.type.text.extension.CodeTextFileExtensionDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;

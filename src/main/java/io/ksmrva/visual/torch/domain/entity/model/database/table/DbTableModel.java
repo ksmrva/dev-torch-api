@@ -8,7 +8,6 @@ import io.ksmrva.visual.torch.domain.entity.model.database.DbModel;
 import io.ksmrva.visual.torch.domain.entity.model.database.column.DbColumnModel;
 import io.ksmrva.visual.torch.domain.entity.model.database.constraint.key.foreign.DbForeignKeyModel;
 import io.ksmrva.visual.torch.domain.entity.model.database.constraint.key.primary.DbPrimaryKeyModel;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -41,7 +40,7 @@ public class DbTableModel extends AbstractBaseEntity<DbTableModelDto, DbTableMod
                cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<DbColumnModel> columns;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "table",
+    @OneToOne(mappedBy = "table",
               cascade = {CascadeType.ALL}, orphanRemoval = true)
     private DbPrimaryKeyModel primaryKey;
 

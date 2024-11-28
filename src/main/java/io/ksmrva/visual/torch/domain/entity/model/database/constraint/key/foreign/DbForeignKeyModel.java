@@ -79,8 +79,8 @@ public class DbForeignKeyModel extends AbstractBaseEntity<DbForeignKeyModelDto, 
         return table;
     }
 
-    public void setTable(DbTableModel dbTableModel) {
-        this.table = dbTableModel;
+    public void setTable(DbTableModel table) {
+        this.table = table;
     }
 
     public DbColumnModel getLocalColumn() {

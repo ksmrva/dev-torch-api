@@ -4,6 +4,8 @@ import io.ksmrva.visual.torch.domain.dto.model.database.source.config.DbModelSou
 import io.ksmrva.visual.torch.domain.entity.AbstractBaseEntity;
 import io.ksmrva.visual.torch.domain.entity.model.database.source.url.DbModelSourceUrl;
 import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
@@ -70,6 +72,35 @@ public class DbModelSourceConfig extends AbstractBaseEntity<DbModelSourceConfigD
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof DbModelSourceConfig that)) {
+            return false;
+        }
+
+        return new EqualsBuilder().appendSuper(super.equals(o))
+                                  .append(getSourceUrl(), that.getSourceUrl())
+                                  .append(getDriverName(), that.getDriverName())
+                                  .append(getUsername(), that.getUsername())
+                                  .append(getPassword(), that.getPassword())
+                                  .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(getSourceUrl())
+                .append(getDriverName())
+                .append(getUsername())
+                .append(getPassword())
+                .toHashCode();
     }
 
 }

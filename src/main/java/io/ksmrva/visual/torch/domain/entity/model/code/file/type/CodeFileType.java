@@ -10,7 +10,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
-@DynamicUpdate
 @Table(name = "file_type", schema = "code_model")
 public class CodeFileType extends AbstractBaseEntity<CodeFileTypeDto, CodeFileType> {
 
