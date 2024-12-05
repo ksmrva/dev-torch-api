@@ -42,8 +42,8 @@ kubectl -n postgresql create secret generic postgresql --from-literal POSTGRES_U
 
 
 {
-  "projectName": "dev-torch-api",
-  "directoryPath": "C://myung/programming/projects/intellij/dev-torch-api",
+  "name": "dev-torch-api",
+  "path": "C://myung/programming/projects/intellij/dev-torch-api",
   "fileExtensionMatcher": {
     "extensionsToMatch": [
       "string"
@@ -54,8 +54,8 @@ kubectl -n postgresql create secret generic postgresql --from-literal POSTGRES_U
 
 
 {
-  "projectName": "media-player",
-  "directoryPath": "C://myung/programming/projects/intellij/media-player",
+  "name": "media-player",
+  "path": "C://myung/programming/projects/intellij/media-player",
   "fileExtensionMatcher": {
     "extensionsToMatch": [
       "string"

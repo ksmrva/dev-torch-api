@@ -9,9 +9,8 @@ public class DbModelTest {
     @Test
     public void equalsHashCodeContracts() {
         /**
-         * Since the Foreign Key Model has a field for the Table that it is linked to as well as is contained in
-         * the Table that owns it, there is a recursive instantiation from the Equals Verifier and as such, we need
-         * to include pre-fab values to allow it to correctly instantiate their mock instances
+         * These prefab values allow the Equals Verifier library to instantiate Objects
+         * with a recursive data structures
          *
          * https://jqno.nl/equalsverifier/errormessages/recursive-datastructure/
          */

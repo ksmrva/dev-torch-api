@@ -29,9 +29,8 @@ public class DbModelDto extends AbstractBaseDto<DbModelDto, DbModel> {
         DbModel entity = super.createEntityWithBaseValues(DbModel::new);
 
         if (this.getSourceConfig() != null) {
-            DbModelSourceConfig source = this.getSourceConfig()
-                                             .convertToEntity();
-            entity.setSourceConfig(source);
+            entity.setSourceConfig(this.getSourceConfig()
+                                       .convertToEntity());
         }
 
         DbModelNameDto dbModelNameDto = this.getName();

@@ -1,12 +1,8 @@
 package io.ksmrva.visual.torch.service.model.code.block;
 
-import io.ksmrva.visual.torch.api.args.model.code.CodeProjectCreateArgs;
-import io.ksmrva.visual.torch.api.args.model.code.CodeRepositoryDirectory;
-import io.ksmrva.visual.torch.api.args.model.code.FileExtensionMatcher;
-import io.ksmrva.visual.torch.domain.dto.model.code.file.CodeFileDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.file.type.data.CodeDataFileDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.file.type.directory.CodeDirectoryFileDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.file.type.text.CodeTextFileDto;
+import io.ksmrva.visual.torch.api.args.model.code.source.file.extension.FileExtensionMatcher;
+import io.ksmrva.visual.torch.api.args.model.code.source.project.CodeModelSourceProjectCreateArgs;
+import io.ksmrva.visual.torch.domain.dto.model.code.source.file.CodeModelSourceFileDto;
 import io.ksmrva.visual.torch.domain.entity.model.code.block.Code;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,13 +21,14 @@ public class CodeModelBlockServiceImpl implements CodeModelBlockService {
     private static final Logger LOGGER = LogManager.getLogger(CodeModelBlockServiceImpl.class);
 
     @Override
-    public List<Code> createCodeBlocksFromProjectDirectory(CodeProjectCreateArgs projectDirectoryDescription) {
+    public List<Code> createCodeBlocksFromProjectDirectory(CodeModelSourceProjectCreateArgs projectDirectoryDescription) {
         List<Code> codeBlocks = new ArrayList<>();
-        CodeRepositoryDirectory codeRepositoryDirectory = new CodeRepositoryDirectory(projectDirectoryDescription.getProjectName(),
-                                                                                      projectDirectoryDescription.getDirectoryPath());
+//        CodeRepositoryDirectory codeRepositoryDirectory = new CodeRepositoryDirectory(projectDirectoryDescription.getProjectName(),
+//                                                                                      projectDirectoryDescription.getDirectoryPath());
         FileExtensionMatcher fileExtensionMatcher = projectDirectoryDescription.getFileExtensionMatcher();
-        File codeRepositoryDirectoryFile = codeRepositoryDirectory.getPath()
-                                                                  .toFile();
+        File codeRepositoryDirectoryFile = null;
+//        File codeRepositoryDirectoryFile = codeRepositoryDirectory.getPath()
+//                                                                  .toFile();
         for (File codeRepositoryFile : Objects.requireNonNull(codeRepositoryDirectoryFile.listFiles())) {
             codeBlocks.addAll(convertProjectDirectoryIntoCodeBlocks(codeRepositoryFile, fileExtensionMatcher));
         }
@@ -82,28 +79,19 @@ public class CodeModelBlockServiceImpl implements CodeModelBlockService {
         }
     }
 
-    private void printCodeFiles(CodeFileDto<?, ?> codeFile) {
+    private void printCodeFiles(CodeModelSourceFileDto codeFile) {
         this.printCodeFiles(codeFile, "");
     }
 
-    private void printCodeFiles(CodeFileDto<?, ?> codeFileToPrint, String spacing) {
-        switch (codeFileToPrint) {
-            case CodeDirectoryFileDto codeDirectoryFile -> {
-                List<CodeFileDto<?, ?>> codeDirectoryFiles = codeDirectoryFile.getNestedFiles();
-                System.out.println(spacing + "Directory: " + codeDirectoryFile.getName());
-                for (CodeFileDto<?, ?> nestedCodeFile : codeDirectoryFiles) {
-                    this.printCodeFiles(nestedCodeFile, spacing + "  ");
-                }
+    private void printCodeFiles(CodeModelSourceFileDto codeFileToPrint, String spacing) {
+        if (codeFileToPrint.isDirectory()) {
+            List<CodeModelSourceFileDto> codeDirectoryFiles = codeFileToPrint.getChildren();
+            System.out.println(spacing + "Directory: " + codeFileToPrint.getName());
+            for (CodeModelSourceFileDto nestedCodeFile : codeDirectoryFiles) {
+                this.printCodeFiles(nestedCodeFile, spacing + "  ");
             }
-            case CodeDataFileDto codeDataFileDto -> {
-                System.out.println(spacing + "Data: " + codeDataFileDto.getName());
-            }
-            case CodeTextFileDto codeTextFileDto -> {
-                System.out.println(spacing + "Text: " + codeTextFileDto.getName());
-            }
-            case null, default ->
-                    throw new IllegalArgumentException("Unrecognized Code File type [" + codeFileToPrint.getClass()
-                                                                                                        .getSimpleName() + "]");
+        } else {
+            System.out.println(spacing + "Data: " + codeFileToPrint.getName());
         }
     }
 

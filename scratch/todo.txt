@@ -14,6 +14,10 @@
 -Implement ChangeDetectionStrategy?
 -Implement ErrorHandler in Angular
     import { ErrorHandler } from '@angular/core';
+-Create virtual file structure that can be customized for Code Files
+-Change all DTO/Entity conversions to DtoFactory usage
+-Heat signature of oldest to newest commit coloring the line number of source code
+
 
 <!-- In component template -->
 <div [class.highlighted]="isHighlighted">Highlighted Content</div>

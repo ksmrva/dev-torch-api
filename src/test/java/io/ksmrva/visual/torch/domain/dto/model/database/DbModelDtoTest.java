@@ -8,6 +8,12 @@ public class DbModelDtoTest {
 
     @Test
     public void equalsHashCodeContracts() {
+        /**
+         * These prefab values allow the Equals Verifier library to instantiate Objects
+         * with a recursive data structures
+         *
+         * https://jqno.nl/equalsverifier/errormessages/recursive-datastructure/
+         */
         DbTableModelDto localTableDtoTestA = new DbTableModelDto();
         localTableDtoTestA.setName("localTableDtoTestA");
 
