@@ -19,14 +19,14 @@ public class DbModelSourceConfigDto extends AbstractBaseDto<DbModelSourceConfigD
     @Override
     public DbModelSourceConfig convertToEntity() {
         DbModelSourceConfig entity = super.createEntityWithBaseValues(DbModelSourceConfig::new);
-        if (this.getUrl() != null) {
-            entity.setSourceUrl(this.getUrl()
-                                    .convertToEntity());
-        }
-
         entity.setDriverName(this.getDriverName());
         entity.setUsername(this.getUsername());
         entity.setPassword(this.getPassword());
+
+        if (this.getUrl() != null) {
+            entity.setUrl(this.getUrl()
+                              .convertToEntity());
+        }
 
         return entity;
     }

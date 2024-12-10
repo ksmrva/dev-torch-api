@@ -1,5 +1,6 @@
 package io.ksmrva.visual.torch.db.dao.model.database.source;
 
+import io.ksmrva.visual.torch.domain.dto.model.database.source.data.DbModelSourceDataTypeDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.DbModelSourceConfigDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.driver.DbModelSourceConfigSupportedDriverDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.preset.DbModelSourcePresetDto;
@@ -15,25 +16,31 @@ public interface DatabaseModelSourceDao {
     /**
      * Create
      **/
-    DbModelSourceUrlDto createSourceUrl(DbModelSourceUrlDto sourceUrlDtoToCreate);
+    List<DbModelSourceDataTypeDto> createAllDataTypes();
 
-    DbModelSourceConfigDto createSourceConfig(DbModelSourceConfigDto sourceConfigDtoToCreate);
+    DbModelSourceUrlDto createUrl(DbModelSourceUrlDto urlDtoToCreate);
+
+    DbModelSourceConfigDto createConfig(DbModelSourceConfigDto configDtoToCreate);
 
     /**
      * Read
      **/
-    List<DbModelSourcePresetDto> getAllSourcePresets();
+    List<DbModelSourceDataTypeDto> getOrCreateAllDataTypes();
 
-    List<DbModelSourceConfigSupportedDriverDto> getAllSourceConfigSupportedDrivers();
+    List<DbModelSourceDataTypeDto> getAllDataTypes();
 
-    List<DbModelSourceUrlSupportedSchemeDto> getAllSourceUrlSupportedSchemes();
+    List<DbModelSourcePresetDto> getAllPresets();
 
-    List<DbModelSourceUrlSupportedProviderDto> getAllSourceUrlSupportedProviders();
+    List<DbModelSourceConfigSupportedDriverDto> getAllConfigSupportedDrivers();
 
-    DbModelSourceConfigDto getSourceConfig(BigInteger sourceConfigId);
+    List<DbModelSourceUrlSupportedSchemeDto> getAllUrlSupportedSchemes();
 
-    List<DbModelSourceUrlDto> getAllSourceUrls();
+    List<DbModelSourceUrlSupportedProviderDto> getAllUrlSupportedProviders();
 
-    List<DbModelSourceConfigDto> getAllSourceConfigs();
+    DbModelSourceConfigDto getConfig(BigInteger configId);
+
+    List<DbModelSourceUrlDto> getAllUrls();
+
+    List<DbModelSourceConfigDto> getAllConfigs();
 
 }

@@ -2,7 +2,7 @@ package io.ksmrva.visual.torch.db.dao.model.code.source.file;
 
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.CodeModelSourceFileDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.data.CodeModelSourceFileDataDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.extension.CodeModelSourceFileCodeExtensionDto;
+import io.ksmrva.visual.torch.domain.dto.model.code.source.file.extension.CodeModelSourceLanguageFileExtensionDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.tree.node.CodeModelSourceFileTreeNodeDto;
 import io.ksmrva.visual.torch.domain.entity.model.code.source.file.CodeModelSourceFile;
 
@@ -25,7 +25,7 @@ public interface CodeModelFileDao {
 
     List<CodeModelSourceFileTreeNodeDto> getAllChildNodes(BigInteger parentNodeId);
 
-    List<CodeModelSourceFileCodeExtensionDto> getFileCodeExtensions();
+    List<CodeModelSourceLanguageFileExtensionDto> getFileCodeExtensions();
 
     /**
      * Update

@@ -3,7 +3,7 @@ package io.ksmrva.visual.torch.service.model.code.source.file;
 import io.ksmrva.visual.torch.db.dao.model.code.source.file.CodeModelFileDao;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.CodeModelSourceFileDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.data.CodeModelSourceFileDataDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.extension.CodeModelSourceFileCodeExtensionDto;
+import io.ksmrva.visual.torch.domain.dto.model.code.source.file.extension.CodeModelSourceLanguageFileExtensionDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.tree.node.CodeModelSourceFileTreeNodeDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,7 +50,7 @@ public class CodeModelSourceFileServiceImpl implements CodeModelSourceFileServic
     }
 
     @Override
-    public List<CodeModelSourceFileCodeExtensionDto> getFileCodeExtensions() {
+    public List<CodeModelSourceLanguageFileExtensionDto> getFileCodeExtensions() {
         return this.codeModelFileDao.getFileCodeExtensions();
     }
 
@@ -118,7 +118,7 @@ public class CodeModelSourceFileServiceImpl implements CodeModelSourceFileServic
     }
 
     private boolean isFileExtensionForCodeFile(String fileExtensionToMatch) {
-        List<CodeModelSourceFileCodeExtensionDto> fileExtensionsForCodeFiles = this.codeModelFileDao.getFileCodeExtensions();
+        List<CodeModelSourceLanguageFileExtensionDto> fileExtensionsForCodeFiles = this.codeModelFileDao.getFileCodeExtensions();
 
         return fileExtensionsForCodeFiles.stream()
                                          .anyMatch(fileExtensionForCodeFile -> fileExtensionForCodeFile.getExtension()

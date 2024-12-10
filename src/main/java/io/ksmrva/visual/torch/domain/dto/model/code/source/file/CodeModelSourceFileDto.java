@@ -37,6 +37,8 @@ public class CodeModelSourceFileDto extends AbstractBaseDto<CodeModelSourceFileD
                                .convertToEntity());
         }
 
+        // Ignore the children field since this is a DTO-only field
+
         return entity;
     }
 

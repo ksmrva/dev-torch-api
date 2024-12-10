@@ -1,6 +1,7 @@
 package io.ksmrva.visual.torch.controller.model.database.source;
 
-import io.ksmrva.visual.torch.controller.AbstractApiController;
+import io.ksmrva.visual.torch.api.arg.constant.DevTorchApiConstants;
+import io.ksmrva.visual.torch.domain.dto.model.database.source.data.DbModelSourceDataTypeDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.DbModelSourceConfigDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.driver.DbModelSourceConfigSupportedDriverDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.preset.DbModelSourcePresetDto;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(AbstractApiController.BASE_URI + "/model/db/source")
-public class DatabaseModelSourceController extends AbstractApiController {
+@RequestMapping(DevTorchApiConstants.DATABASE_MODEL_SOURCE_BASE_URI_PATH)
+public class DatabaseModelSourceController {
 
     private final DatabaseModelSourceService databaseModelSourceService;
 
@@ -23,43 +24,48 @@ public class DatabaseModelSourceController extends AbstractApiController {
     }
 
     @PostMapping("/url")
-    public @ResponseBody DbModelSourceUrlDto createSourceUrl(@RequestBody DbModelSourceUrlDto sourceUrl) {
-        return databaseModelSourceService.createSourceUrl(sourceUrl);
+    public @ResponseBody DbModelSourceUrlDto createUrl(@RequestBody DbModelSourceUrlDto urlToCreate) {
+        return databaseModelSourceService.createUrl(urlToCreate);
     }
 
     @PostMapping()
-    public @ResponseBody DbModelSourceConfigDto createSourceConfig(@RequestBody DbModelSourceConfigDto sourceConfigToCreate) {
-        return databaseModelSourceService.createSourceConfig(sourceConfigToCreate);
+    public @ResponseBody DbModelSourceConfigDto createConfig(@RequestBody DbModelSourceConfigDto configToCreate) {
+        return databaseModelSourceService.createConfig(configToCreate);
+    }
+
+    @GetMapping("/data/type")
+    public @ResponseBody List<DbModelSourceDataTypeDto> getOrCreateAllDataTypes() {
+        return databaseModelSourceService.getOrCreateAllDataTypes();
     }
 
     @GetMapping("/preset")
-    public List<DbModelSourcePresetDto> getAllSourcePresets() {
-        return databaseModelSourceService.getAllSourcePresets();
+    public List<DbModelSourcePresetDto> getAllPresets() {
+        return databaseModelSourceService.getAllPresets();
     }
 
     @GetMapping("/driver")
-    public List<DbModelSourceConfigSupportedDriverDto> getAllSourceConfigSupportedDrivers() {
-        return databaseModelSourceService.getAllSourceConfigSupportedDrivers();
+    public List<DbModelSourceConfigSupportedDriverDto> getAllConfigSupportedDrivers() {
+        return databaseModelSourceService.getAllConfigSupportedDrivers();
     }
 
     @GetMapping("/url/scheme")
-    public List<DbModelSourceUrlSupportedSchemeDto> getAllSourceUrlSupportedSchemes() {
-        return databaseModelSourceService.getAllSourceUrlSupportedSchemes();
+    public List<DbModelSourceUrlSupportedSchemeDto> getAllUrlSupportedSchemes() {
+        return databaseModelSourceService.getAllUrlSupportedSchemes();
     }
 
     @GetMapping("/url/provider")
-    public List<DbModelSourceUrlSupportedProviderDto> getAllSourceUrlSupportedProviders() {
-        return databaseModelSourceService.getAllSourceUrlSupportedProviders();
+    public List<DbModelSourceUrlSupportedProviderDto> getAllUrlSupportedProviders() {
+        return databaseModelSourceService.getAllUrlSupportedProviders();
     }
 
     @GetMapping("/url")
-    public @ResponseBody List<DbModelSourceUrlDto> getAllSourceUrls() {
-        return databaseModelSourceService.getAllSourceUrls();
+    public @ResponseBody List<DbModelSourceUrlDto> getAllUrls() {
+        return databaseModelSourceService.getAllUrls();
     }
 
     @GetMapping()
-    public @ResponseBody List<DbModelSourceConfigDto> getAllSourceConfigs() {
-        return databaseModelSourceService.getAllSourceConfigs();
+    public @ResponseBody List<DbModelSourceConfigDto> getAllConfigs() {
+        return databaseModelSourceService.getAllConfigs();
     }
 
 }

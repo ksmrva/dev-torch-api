@@ -1,5 +1,6 @@
 package io.ksmrva.visual.torch.service.model.database.source;
 
+import io.ksmrva.visual.torch.domain.dto.model.database.source.data.DbModelSourceDataTypeDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.DbModelSourceConfigDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.driver.DbModelSourceConfigSupportedDriverDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.preset.DbModelSourcePresetDto;
@@ -12,22 +13,24 @@ import java.util.List;
 
 public interface DatabaseModelSourceService {
 
-    DbModelSourceUrlDto createSourceUrl(DbModelSourceUrlDto sourceUrl);
+    DbModelSourceUrlDto createUrl(DbModelSourceUrlDto urlToCreate);
 
-    DbModelSourceConfigDto createSourceConfig(DbModelSourceConfigDto sourceConfig);
+    DbModelSourceConfigDto createConfig(DbModelSourceConfigDto configToCreate);
 
-    List<DbModelSourcePresetDto> getAllSourcePresets();
+    List<DbModelSourceDataTypeDto> getOrCreateAllDataTypes();
 
-    List<DbModelSourceConfigSupportedDriverDto> getAllSourceConfigSupportedDrivers();
+    List<DbModelSourcePresetDto> getAllPresets();
 
-    List<DbModelSourceUrlSupportedSchemeDto> getAllSourceUrlSupportedSchemes();
+    List<DbModelSourceConfigSupportedDriverDto> getAllConfigSupportedDrivers();
 
-    List<DbModelSourceUrlSupportedProviderDto> getAllSourceUrlSupportedProviders();
+    List<DbModelSourceUrlSupportedSchemeDto> getAllUrlSupportedSchemes();
 
-    DbModelSourceConfigDto getSourceConfig(BigInteger sourceConfigId);
+    List<DbModelSourceUrlSupportedProviderDto> getAllUrlSupportedProviders();
 
-    List<DbModelSourceUrlDto> getAllSourceUrls();
+    DbModelSourceConfigDto getConfig(BigInteger configId);
 
-    List<DbModelSourceConfigDto> getAllSourceConfigs();
+    List<DbModelSourceUrlDto> getAllUrls();
+
+    List<DbModelSourceConfigDto> getAllConfigs();
 
 }

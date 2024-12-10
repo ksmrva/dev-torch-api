@@ -70,8 +70,8 @@ public class CodeModelSourceFileDataDto extends AbstractBaseDto<CodeModelSourceF
         }
 
         return new EqualsBuilder().appendSuper(super.equals(o))
-                                  .append(isBinary(), that.isBinary())
                                   .append(getFileId(), that.getFileId())
+                                  .append(isBinary(), that.isBinary())
                                   .append(getBinaryContentUri(), that.getBinaryContentUri())
                                   .append(getTextContent(), that.getTextContent())
                                   .isEquals();

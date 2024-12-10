@@ -17,7 +17,7 @@
 -Create virtual file structure that can be customized for Code Files
 -Change all DTO/Entity conversions to DtoFactory usage
 -Heat signature of oldest to newest commit coloring the line number of source code
-
+-Update CodeSourceFileDto to split into Binary and Text types
 
 <!-- In component template -->
 <div [class.highlighted]="isHighlighted">Highlighted Content</div>

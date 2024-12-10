@@ -10,12 +10,12 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "source_config", schema = "db_model")
+@Table(name = "config", schema = "db_model_source")
 public class DbModelSourceConfig extends AbstractBaseEntity<DbModelSourceConfigDto, DbModelSourceConfig> {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "source_url_id")
-    private DbModelSourceUrl sourceUrl;
+    @JoinColumn(name = "url_id")
+    private DbModelSourceUrl url;
 
     @Column(name = "driver_name")
     private String driverName;
@@ -30,8 +30,8 @@ public class DbModelSourceConfig extends AbstractBaseEntity<DbModelSourceConfigD
     public DbModelSourceConfigDto convertToDto() {
         DbModelSourceConfigDto dto = super.createDtoWithBaseValues(DbModelSourceConfigDto::new);
 
-        if (this.getSourceUrl() != null) {
-            dto.setUrl(this.getSourceUrl()
+        if (this.getUrl() != null) {
+            dto.setUrl(this.getUrl()
                            .convertToDto());
         }
 
@@ -42,12 +42,12 @@ public class DbModelSourceConfig extends AbstractBaseEntity<DbModelSourceConfigD
         return dto;
     }
 
-    public DbModelSourceUrl getSourceUrl() {
-        return sourceUrl;
+    public DbModelSourceUrl getUrl() {
+        return url;
     }
 
-    public void setSourceUrl(DbModelSourceUrl sourceUrl) {
-        this.sourceUrl = sourceUrl;
+    public void setUrl(DbModelSourceUrl url) {
+        this.url = url;
     }
 
     public String getDriverName() {
@@ -85,7 +85,7 @@ public class DbModelSourceConfig extends AbstractBaseEntity<DbModelSourceConfigD
         }
 
         return new EqualsBuilder().appendSuper(super.equals(o))
-                                  .append(getSourceUrl(), that.getSourceUrl())
+                                  .append(getUrl(), that.getUrl())
                                   .append(getDriverName(), that.getDriverName())
                                   .append(getUsername(), that.getUsername())
                                   .append(getPassword(), that.getPassword())
@@ -96,7 +96,7 @@ public class DbModelSourceConfig extends AbstractBaseEntity<DbModelSourceConfigD
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
-                .append(getSourceUrl())
+                .append(getUrl())
                 .append(getDriverName())
                 .append(getUsername())
                 .append(getPassword())

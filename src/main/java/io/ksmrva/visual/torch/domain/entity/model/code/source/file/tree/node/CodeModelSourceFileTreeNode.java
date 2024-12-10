@@ -35,6 +35,8 @@ public class CodeModelSourceFileTreeNode extends AbstractBaseEntity<CodeModelSou
         dto.setFileId(this.getFileId());
         dto.setHasChildren(this.isHasChildren());
 
+        // Ignore the parentNode field as this is an Entity-only field
+
         return dto;
     }
 

@@ -1,7 +1,7 @@
 package io.ksmrva.visual.torch.controller.model.code.source.project;
 
-import io.ksmrva.visual.torch.controller.AbstractApiController;
-import io.ksmrva.visual.torch.api.args.model.code.source.project.CodeModelSourceProjectCreateArgs;
+import io.ksmrva.visual.torch.api.arg.constant.DevTorchApiConstants;
+import io.ksmrva.visual.torch.api.arg.model.code.source.project.CodeModelSourceProjectCreateArgs;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.project.CodeModelSourceProjectDto;
 import io.ksmrva.visual.torch.service.model.code.source.project.CodeModelProjectService;
 import org.apache.logging.log4j.LogManager;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(AbstractApiController.BASE_URI + "/model/code/source/project")
-public class CodeModelSourceProjectController extends AbstractApiController {
+@RequestMapping(DevTorchApiConstants.CODE_MODEL_SOURCE_PROJECT_BASE_URI_PATH)
+public class CodeModelSourceProjectController {
 
     private static final Logger LOGGER = LogManager.getLogger(CodeModelSourceProjectController.class);
 

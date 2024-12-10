@@ -1,27 +1,33 @@
-DROP TABLE IF EXISTS code_model.source_file_data;
-DROP TABLE IF EXISTS code_model.source_file;
-DROP TABLE IF EXISTS code_model.source_project;
-DROP TABLE IF EXISTS code_model.source_file_tree_node;
-DROP TABLE IF EXISTS code_model.source_file_code_extension;
-DROP TABLE IF EXISTS code_model.language;
+-- ******************************************************************************
+---------------------------------------------------------------------------------
+-- Source
+---------------------------------------------------------------------------------
+-- ******************************************************************************
 
-DROP SCHEMA IF EXISTS code_model;
+DROP TABLE IF EXISTS code_model_source.file_data;
+DROP TABLE IF EXISTS code_model_source.file;
+DROP TABLE IF EXISTS code_model_source.project;
+DROP TABLE IF EXISTS code_model_source.file_tree_node;
+DROP TABLE IF EXISTS code_model_source.file_code_extension;
+DROP TABLE IF EXISTS code_model_source.language;
+
+DROP SCHEMA IF EXISTS code_model_source;
 
 ---------------------------------------------------------------------------------
--- Schema: code_model
+-- Schema: code_model_source
 ---------------------------------------------------------------------------------
 
-CREATE SCHEMA IF NOT EXISTS code_model
+CREATE SCHEMA IF NOT EXISTS code_model_source
     AUTHORIZATION postgresadmin;
 
-COMMENT ON SCHEMA code_model
-    IS 'Entities used to describe a Model of a Codebase';
+COMMENT ON SCHEMA code_model_source
+    IS 'Entities used to define the configuration details of a Source that can be used to create Components for a Code Model';
 
 ---------------------------------------------------------------------------------
--- Table: code_model.language
+-- Table: code_model_source.language
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS code_model.language
+CREATE TABLE IF NOT EXISTS code_model_source.language
 (
     id            bigserial                         NOT NULL,
     name          text COLLATE pg_catalog."default" NOT NULL,
@@ -35,16 +41,16 @@ CREATE TABLE IF NOT EXISTS code_model.language
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS code_model.language
+ALTER TABLE IF EXISTS code_model_source.language
     OWNER to postgresadmin;
 
-COMMENT ON TABLE code_model.language
-    IS 'Represents a programming language to be used when creating Code Models';
+COMMENT ON TABLE code_model_source.language
+    IS 'Represents a Programming Language used to classify various records for a Code Model';
 
-COMMENT ON CONSTRAINT "languageNameUniqueConstraint" ON code_model.language
+COMMENT ON CONSTRAINT "languageNameUniqueConstraint" ON code_model_source.language
     IS 'Ensures that the Name value is unique among all Languages';
 
-INSERT INTO code_model.language (name, created_uid, created_date, modified_uid, modified_date)
+INSERT INTO code_model_source.language (name, created_uid, created_date, modified_uid, modified_date)
 VALUES ('abap', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('apex', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('azcli', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
@@ -129,10 +135,10 @@ VALUES ('abap', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('yaml', 'kmark', '2024-09-23', 'kmark', '2024-09-23');
 
 ---------------------------------------------------------------------------------
--- Table: code_model.source_file_extension
+-- Table: code_model_source.language_file_extension
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS code_model.source_file_code_extension
+CREATE TABLE IF NOT EXISTS code_model_source.language_file_extension
 (
     id            bigserial                         NOT NULL,
     language_id   bigint                            NOT NULL,
@@ -141,224 +147,224 @@ CREATE TABLE IF NOT EXISTS code_model.source_file_code_extension
     created_date  date                              NOT NULL,
     modified_uid  text COLLATE pg_catalog."default" NOT NULL,
     modified_date date                              NOT NULL,
-    CONSTRAINT "sourceFileCodeExtensionPKConstraint" PRIMARY KEY (id),
-    CONSTRAINT "sourceFileCodeExtensionUniqueConstraint" UNIQUE (extension)
+    CONSTRAINT "sourceFileLanguageExtensionPKConstraint" PRIMARY KEY (id),
+    CONSTRAINT "sourceFileLanguageExtensionUniqueConstraint" UNIQUE (extension)
         INCLUDE (extension),
-    CONSTRAINT "sourceFileCodeExtensionLanguageFKConstraint" FOREIGN KEY (language_id)
-        REFERENCES code_model.language (id) MATCH SIMPLE
+    CONSTRAINT "sourceFileLanguageExtensionUnderlyingLanguageFKConstraint" FOREIGN KEY (language_id)
+        REFERENCES code_model_source.language (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS code_model.source_file_code_extension
+ALTER TABLE IF EXISTS code_model_source.language_file_extension
     OWNER to postgresadmin;
 
-COMMENT ON TABLE code_model.source_file_code_extension
-    IS 'Stores the various File Extensions that match known Code Language Source Code Files';
+COMMENT ON TABLE code_model_source.language_file_extension
+    IS 'Stores the various File Extensions that match known Code Languages';
 
-COMMENT ON CONSTRAINT "sourceFileCodeExtensionUniqueConstraint" ON code_model.source_file_code_extension
-    IS 'Ensures that the Extension value is unique among all Source File Extensions';
+COMMENT ON CONSTRAINT "sourceFileLanguageExtensionUniqueConstraint" ON code_model_source.language_file_extension
+    IS 'Ensures that the File Extension value is unique among all Language File Extensions';
 
-COMMENT ON CONSTRAINT "sourceFileCodeExtensionLanguageFKConstraint" ON code_model.source_file_code_extension
-    IS 'Links this Source File Extension with a Language to determine if a Code File corresponds to source code for that Language';
+COMMENT ON CONSTRAINT "sourceFileLanguageExtensionUnderlyingLanguageFKConstraint" ON code_model_source.language_file_extension
+    IS 'Links this Language File Extension with its underlying Language';
 
-INSERT INTO code_model.source_file_code_extension (language_id, extension, created_uid, created_date, modified_uid, modified_date)
-VALUES ((SELECT id FROM code_model.language WHERE name = 'abap'), 'abap', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'apex'), 'cls', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'azcli'), 'azcli', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'bat'), 'bat', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'bat'), 'cmd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'bicep'), 'bicep', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'cameligo'), 'mligo', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'clojure'), 'clj', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'clojure'), 'cljs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'clojure'), 'cljc', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'clojure'), 'edn', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'coffee'), 'coffee', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'cpp'), 'c', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'cpp'), 'h', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'csharp'), 'cs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'csharp'), 'csx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'csharp'), 'cake', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'csp'), 'csp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'css'), 'css', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'cypher'), 'cypher', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'cypher'), 'cyp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'dart'), 'dart', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'dockerfile'), 'dockerfile', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'ecl'), 'ecl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'elixir'), 'ex', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'elixir'), 'exs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'flow9'), 'flow', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'freemarker2'), 'ftl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'freemarker2'), 'ftlh', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'freemarker2'), 'ftlx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'fsharp'), 'fs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'fsharp'), 'fsi', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'fsharp'), 'ml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'fsharp'), 'mli', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'fsharp'), 'fsx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'fsharp'), 'fsscript', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'go'), 'go', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'graphql'), 'graphql', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'graphql'), 'gql', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'handlebars'), 'handlebars', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'handlebars'), 'hbs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'hcl'), 'tf', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'hcl'), 'tfvars', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'hcl'), 'hcl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'html'), 'html', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'html'), 'htm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'html'), 'shtml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'html'), 'xhtml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'html'), 'mdoc', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'html'), 'jsp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'html'), 'asp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'html'), 'aspx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'html'), 'jshtm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'ini'), 'ini', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'ini'), 'properties', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'ini'), 'gitconfig', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'java'), 'java', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'java'), 'jav', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'javascript'), 'js', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'javascript'), 'es6', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'javascript'), 'jsx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'javascript'), 'mjs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'javascript'), 'cjs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'julia'), 'jl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'kotlin'), 'kt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'kotlin'), 'kts', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'less'), 'less', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'lexon'), 'lex', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'liquid'), 'liquid', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'liquid'), 'html.liquid', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'lua'), 'lua', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'm3'), 'm3', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'm3'), 'i3', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'm3'), 'mg', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'm3'), 'ig', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'markdown'), 'md', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'markdown'), 'markdown', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'markdown'), 'mdown', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'markdown'), 'mkdn', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'markdown'), 'mkd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'markdown'), 'mdwn', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'markdown'), 'mdtxt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'markdown'), 'mdtext', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'mdx'), 'mdx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'mips'), 's', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'msdax'), 'dax', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'msdax'), 'msdax', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'objective-c'), 'm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'pascal'), 'pas', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'pascal'), 'p', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'pascal'), 'pp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'pascaligo'), 'ligo', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'perl'), 'pl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'perl'), 'pm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'php'), 'php', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'php'), 'php4', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'php'), 'php5', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'php'), 'phtml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'php'), 'ctp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'pla'), 'pla', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'postiats'), 'dats', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'postiats'), 'sats', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'postiats'), 'hats', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'powerquery'), 'pq', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'powerquery'), 'pqm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'powershell'), 'ps1', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'powershell'), 'psm1', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'powershell'), 'psd1', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'protobuf'), 'proto', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'pug'), 'jade', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'pug'), 'pug', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'python'), 'py', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'python'), 'rpy', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'python'), 'pyw', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'python'), 'cpy', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'python'), 'gyp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'python'), 'gypi', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'qsharp'), 'qs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'r'), 'r', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'r'), 'rhistory', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'r'), 'rmd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'r'), 'rprofile', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'r'), 'rt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'razor'), 'cshtml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'redis'), 'redis', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'restructuredtext'), 'rst', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'ruby'), 'rb', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'ruby'), 'rbx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'ruby'), 'rjs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'ruby'), 'gemspec', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'ruby'), 'ru', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'rust'), 'rs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'rust'), 'rlib', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'sb'), 'sb', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'scala'), 'scala', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'scala'), 'sc', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'scala'), 'sbt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'scheme'), 'scm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'scheme'), 'ss', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'scheme'), 'sch', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'scheme'), 'rkt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'scss'), 'scss', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'shell'), 'sh', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'shell'), 'bash', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'solidity'), 'sol', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'sophia'), 'aes', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'sparql'), 'rq', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'sql'), 'sql', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'st'), 'st', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'st'), 'iecst', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'st'), 'iecplc', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'st'), 'lc3lib', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'st'), 'TcPOU', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'st'), 'TcDUT', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'st'), 'TcGVL', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'st'), 'TcIO', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'swift'), 'swift', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'systemverilog'), 'sv', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'systemverilog'), 'svh', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'tcl'), 'tcl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'twig'), 'twig', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'typescript'), 'ts', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'typescript'), 'tsx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'typescript'), 'cts', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'typescript'), 'mts', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'typespec'), 'tsp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'vb'), 'vb', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'verilog'), 'v', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'verilog'), 'vh', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'wgsl'), 'wgsl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'xml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'xsd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'dtd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'ascx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'csproj', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'config', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'props', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'targets', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'wxi', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'wxl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'wxs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'xaml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'svg', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'svgz', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'opf', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'xslt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'xml'), 'xsl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'yaml'), 'yaml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
-       ((SELECT id FROM code_model.language WHERE name = 'yaml'), 'yml', 'kmark', '2024-09-23', 'kmark', '2024-09-23');
+INSERT INTO code_model_source.language_file_extension (language_id, extension, created_uid, created_date, modified_uid, modified_date)
+VALUES ((SELECT id FROM code_model_source.language WHERE name = 'abap'), 'abap', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'apex'), 'cls', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'azcli'), 'azcli', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'bat'), 'bat', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'bat'), 'cmd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'bicep'), 'bicep', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'cameligo'), 'mligo', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'clojure'), 'clj', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'clojure'), 'cljs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'clojure'), 'cljc', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'clojure'), 'edn', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'coffee'), 'coffee', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'cpp'), 'c', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'cpp'), 'h', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'csharp'), 'cs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'csharp'), 'csx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'csharp'), 'cake', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'csp'), 'csp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'css'), 'css', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'cypher'), 'cypher', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'cypher'), 'cyp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'dart'), 'dart', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'dockerfile'), 'dockerfile', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'ecl'), 'ecl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'elixir'), 'ex', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'elixir'), 'exs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'flow9'), 'flow', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'freemarker2'), 'ftl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'freemarker2'), 'ftlh', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'freemarker2'), 'ftlx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'fsharp'), 'fs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'fsharp'), 'fsi', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'fsharp'), 'ml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'fsharp'), 'mli', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'fsharp'), 'fsx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'fsharp'), 'fsscript', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'go'), 'go', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'graphql'), 'graphql', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'graphql'), 'gql', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'handlebars'), 'handlebars', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'handlebars'), 'hbs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'hcl'), 'tf', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'hcl'), 'tfvars', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'hcl'), 'hcl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'html'), 'html', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'html'), 'htm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'html'), 'shtml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'html'), 'xhtml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'html'), 'mdoc', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'html'), 'jsp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'html'), 'asp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'html'), 'aspx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'html'), 'jshtm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'ini'), 'ini', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'ini'), 'properties', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'ini'), 'gitconfig', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'java'), 'java', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'java'), 'jav', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'javascript'), 'js', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'javascript'), 'es6', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'javascript'), 'jsx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'javascript'), 'mjs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'javascript'), 'cjs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'julia'), 'jl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'kotlin'), 'kt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'kotlin'), 'kts', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'less'), 'less', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'lexon'), 'lex', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'liquid'), 'liquid', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'liquid'), 'html.liquid', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'lua'), 'lua', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'm3'), 'm3', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'm3'), 'i3', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'm3'), 'mg', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'm3'), 'ig', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'markdown'), 'md', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'markdown'), 'markdown', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'markdown'), 'mdown', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'markdown'), 'mkdn', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'markdown'), 'mkd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'markdown'), 'mdwn', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'markdown'), 'mdtxt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'markdown'), 'mdtext', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'mdx'), 'mdx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'mips'), 's', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'msdax'), 'dax', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'msdax'), 'msdax', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'objective-c'), 'm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'pascal'), 'pas', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'pascal'), 'p', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'pascal'), 'pp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'pascaligo'), 'ligo', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'perl'), 'pl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'perl'), 'pm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'php'), 'php', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'php'), 'php4', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'php'), 'php5', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'php'), 'phtml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'php'), 'ctp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'pla'), 'pla', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'postiats'), 'dats', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'postiats'), 'sats', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'postiats'), 'hats', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'powerquery'), 'pq', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'powerquery'), 'pqm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'powershell'), 'ps1', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'powershell'), 'psm1', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'powershell'), 'psd1', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'protobuf'), 'proto', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'pug'), 'jade', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'pug'), 'pug', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'python'), 'py', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'python'), 'rpy', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'python'), 'pyw', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'python'), 'cpy', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'python'), 'gyp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'python'), 'gypi', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'qsharp'), 'qs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'r'), 'r', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'r'), 'rhistory', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'r'), 'rmd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'r'), 'rprofile', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'r'), 'rt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'razor'), 'cshtml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'redis'), 'redis', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'restructuredtext'), 'rst', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'ruby'), 'rb', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'ruby'), 'rbx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'ruby'), 'rjs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'ruby'), 'gemspec', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'ruby'), 'ru', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'rust'), 'rs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'rust'), 'rlib', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'sb'), 'sb', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'scala'), 'scala', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'scala'), 'sc', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'scala'), 'sbt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'scheme'), 'scm', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'scheme'), 'ss', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'scheme'), 'sch', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'scheme'), 'rkt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'scss'), 'scss', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'shell'), 'sh', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'shell'), 'bash', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'solidity'), 'sol', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'sophia'), 'aes', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'sparql'), 'rq', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'sql'), 'sql', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'st'), 'st', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'st'), 'iecst', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'st'), 'iecplc', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'st'), 'lc3lib', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'st'), 'TcPOU', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'st'), 'TcDUT', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'st'), 'TcGVL', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'st'), 'TcIO', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'swift'), 'swift', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'systemverilog'), 'sv', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'systemverilog'), 'svh', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'tcl'), 'tcl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'twig'), 'twig', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'typescript'), 'ts', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'typescript'), 'tsx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'typescript'), 'cts', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'typescript'), 'mts', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'typespec'), 'tsp', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'vb'), 'vb', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'verilog'), 'v', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'verilog'), 'vh', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'wgsl'), 'wgsl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'xml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'xsd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'dtd', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'ascx', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'csproj', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'config', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'props', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'targets', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'wxi', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'wxl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'wxs', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'xaml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'svg', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'svgz', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'opf', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'xslt', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'xml'), 'xsl', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'yaml'), 'yaml', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ((SELECT id FROM code_model_source.language WHERE name = 'yaml'), 'yml', 'kmark', '2024-09-23', 'kmark', '2024-09-23');
 
 ---------------------------------------------------------------------------------
--- Table: code_model.source_file_tree_node
+-- Table: code_model_source.file_tree_node
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS code_model.source_file_tree_node
+CREATE TABLE IF NOT EXISTS code_model_source.file_tree_node
 (
     id             bigserial                         NOT NULL,
     parent_node_id bigint,
@@ -368,26 +374,26 @@ CREATE TABLE IF NOT EXISTS code_model.source_file_tree_node
     modified_date  date                              NOT NULL,
     CONSTRAINT "sourceFileTreeNodePKConstraint" PRIMARY KEY (id),
     CONSTRAINT "sourceFileTreeNodeParentNodeFKConstraint" FOREIGN KEY (parent_node_id)
-        REFERENCES code_model.source_file_tree_node (id) MATCH SIMPLE
+        REFERENCES code_model_source.file_tree_node (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS code_model.source_file_tree_node
+ALTER TABLE IF EXISTS code_model_source.source_file_tree_node
     OWNER to postgresadmin;
 
-COMMENT ON TABLE code_model.source_file_tree_node
-    IS 'Captures the structure of a Codebase''s Source Files by representing each Source File as a Node within a Tree';
+COMMENT ON TABLE code_model_source.file_tree_node
+    IS 'Captures the File Structure of a Codebase''s Source Files by representing each Source File as a Node within a Tree';
 
-COMMENT ON CONSTRAINT "sourceFileTreeNodeParentNodeFKConstraint" ON code_model.source_file_tree_node
-    IS 'Links this Source File Node with another Source File Node which represents its parent in a File tree';
+COMMENT ON CONSTRAINT "sourceFileTreeNodeParentNodeFKConstraint" ON code_model_source.file_tree_node
+    IS 'Links this Source File Node with another Source File Node which represents its Parent Node in a File Tree';
 
 ---------------------------------------------------------------------------------
--- Table: code_model.source_file
+-- Table: code_model_source.file
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS code_model.source_file
+CREATE TABLE IF NOT EXISTS code_model_source.file
 (
     id            bigserial                         NOT NULL,
     tree_node_id  bigint                            NOT NULL,
@@ -399,26 +405,26 @@ CREATE TABLE IF NOT EXISTS code_model.source_file
     modified_date date                              NOT NULL,
     CONSTRAINT "sourceFilePKConstraint" PRIMARY KEY (id),
     CONSTRAINT "sourceFileTreeNodeFKConstraint" FOREIGN KEY (tree_node_id)
-        REFERENCES code_model.source_file_tree_node (id) MATCH SIMPLE
+        REFERENCES code_model_source.file_tree_node (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS code_model.source_file
+ALTER TABLE IF EXISTS code_model_source.file
     OWNER to postgresadmin;
 
-COMMENT ON TABLE code_model.source_file
-    IS 'Represents a File within a Codebase that acts as a source to create a Code Model';
+COMMENT ON TABLE code_model_source.file
+    IS 'Represents a File within a Codebase that acts as a Source to create Components of a Code Model';
 
-COMMENT ON CONSTRAINT "sourceFileTreeNodeFKConstraint" ON code_model.source_file
-    IS 'Links this Source File with a File Tree Node entity which defines the backing structure of the Files within a Codebase';
+COMMENT ON CONSTRAINT "sourceFileTreeNodeFKConstraint" ON code_model_source.file
+    IS 'Links this Source File with a File Tree Node entity which defines the backing File Structure of the Files within a Codebase';
 
 ---------------------------------------------------------------------------------
--- Table: code_model.source_file_data
+-- Table: code_model_source.file_data
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS code_model.source_file_data
+CREATE TABLE IF NOT EXISTS code_model_source.file_data
 (
     id                 bigserial                         NOT NULL,
     file_id            bigint                            NOT NULL,
@@ -431,26 +437,26 @@ CREATE TABLE IF NOT EXISTS code_model.source_file_data
     modified_date      date                              NOT NULL,
     CONSTRAINT "sourceFileDataPKConstraint" PRIMARY KEY (id),
     CONSTRAINT "sourceFileDataUnderlyingFileFKConstraint" FOREIGN KEY (file_id)
-        REFERENCES code_model.source_file (id) MATCH SIMPLE
+        REFERENCES code_model_source.file_data (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS code_model.source_file_data
+ALTER TABLE IF EXISTS code_model_source.source_file_data
     OWNER to postgresadmin;
 
-COMMENT ON TABLE code_model.source_file_data
-    IS 'Stores the data contents of a non-Directory Source File, either as a String or a URI pointer to binary data';
+COMMENT ON TABLE code_model_source.file_data
+    IS 'Stores the Data contents of a non-Directory Source File, either as a String or a URI pointer to Binary Data';
 
-COMMENT ON CONSTRAINT "sourceFileDataUnderlyingFileFKConstraint" ON code_model.source_file_data
-    IS 'Links this Source File Data with its underlying Source File entity';
+COMMENT ON CONSTRAINT "sourceFileDataUnderlyingFileFKConstraint" ON code_model_source.file_data
+    IS 'Links this Source File Data with its underlying Source File';
 
 ---------------------------------------------------------------------------------
--- Table: code_model.source_project
+-- Table: code_model_source.project
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS code_model.source_project
+CREATE TABLE IF NOT EXISTS code_model_source.project
 (
     id                bigserial                         NOT NULL,
     name              text COLLATE pg_catalog."default" NOT NULL,
@@ -463,20 +469,26 @@ CREATE TABLE IF NOT EXISTS code_model.source_project
     CONSTRAINT "sourceProjectNameUniqueConstraint" UNIQUE (name)
         INCLUDE (name),
     CONSTRAINT "sourceProjectRootTreeNodeFKConstraint" FOREIGN KEY (root_tree_node_id)
-        REFERENCES code_model.source_file_tree_node (id) MATCH SIMPLE
+        REFERENCES code_model_source.file_tree_node (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS code_model.source_project
+ALTER TABLE IF EXISTS code_model_source.source_project
     OWNER to postgresadmin;
 
-COMMENT ON TABLE code_model.source_project
+COMMENT ON TABLE code_model_source.project
     IS 'Represents a Project within a Codebase containing Source Code Files';
 
-COMMENT ON CONSTRAINT "sourceProjectNameUniqueConstraint" ON code_model.source_project
+COMMENT ON CONSTRAINT "sourceProjectNameUniqueConstraint" ON code_model_source.project
     IS 'Ensures that the Name of the Source Project is unique among all Source Projects';
 
-COMMENT ON CONSTRAINT "sourceProjectRootTreeNodeFKConstraint" ON code_model.source_project
+COMMENT ON CONSTRAINT "sourceProjectRootTreeNodeFKConstraint" ON code_model_source.project
     IS 'Links this Source Project with a File Tree Node that represents the Root File Node for the Project';
+
+-- ******************************************************************************
+---------------------------------------------------------------------------------
+-- Component
+---------------------------------------------------------------------------------
+-- ******************************************************************************

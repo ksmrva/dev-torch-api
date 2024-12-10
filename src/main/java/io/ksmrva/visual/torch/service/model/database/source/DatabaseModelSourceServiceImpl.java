@@ -1,6 +1,7 @@
 package io.ksmrva.visual.torch.service.model.database.source;
 
 import io.ksmrva.visual.torch.db.dao.model.database.source.DatabaseModelSourceDao;
+import io.ksmrva.visual.torch.domain.dto.model.database.source.data.DbModelSourceDataTypeDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.DbModelSourceConfigDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.config.driver.DbModelSourceConfigSupportedDriverDto;
 import io.ksmrva.visual.torch.domain.dto.model.database.source.preset.DbModelSourcePresetDto;
@@ -24,48 +25,53 @@ public class DatabaseModelSourceServiceImpl implements DatabaseModelSourceServic
     }
 
     @Override
-    public DbModelSourceUrlDto createSourceUrl(DbModelSourceUrlDto sourceUrl) {
-        return databaseModelSourceDao.createSourceUrl(sourceUrl);
+    public DbModelSourceUrlDto createUrl(DbModelSourceUrlDto urlToCreate) {
+        return databaseModelSourceDao.createUrl(urlToCreate);
     }
 
     @Override
-    public DbModelSourceConfigDto createSourceConfig(DbModelSourceConfigDto sourceConfig) {
-        return databaseModelSourceDao.createSourceConfig(sourceConfig);
+    public DbModelSourceConfigDto createConfig(DbModelSourceConfigDto configToCreate) {
+        return databaseModelSourceDao.createConfig(configToCreate);
     }
 
     @Override
-    public List<DbModelSourcePresetDto> getAllSourcePresets() {
-        return databaseModelSourceDao.getAllSourcePresets();
+    public List<DbModelSourceDataTypeDto> getOrCreateAllDataTypes() {
+        return databaseModelSourceDao.getOrCreateAllDataTypes();
     }
 
     @Override
-    public List<DbModelSourceConfigSupportedDriverDto> getAllSourceConfigSupportedDrivers() {
-        return databaseModelSourceDao.getAllSourceConfigSupportedDrivers();
+    public List<DbModelSourcePresetDto> getAllPresets() {
+        return databaseModelSourceDao.getAllPresets();
     }
 
     @Override
-    public List<DbModelSourceUrlSupportedSchemeDto> getAllSourceUrlSupportedSchemes() {
-        return databaseModelSourceDao.getAllSourceUrlSupportedSchemes();
+    public List<DbModelSourceConfigSupportedDriverDto> getAllConfigSupportedDrivers() {
+        return databaseModelSourceDao.getAllConfigSupportedDrivers();
     }
 
     @Override
-    public List<DbModelSourceUrlSupportedProviderDto> getAllSourceUrlSupportedProviders() {
-        return databaseModelSourceDao.getAllSourceUrlSupportedProviders();
+    public List<DbModelSourceUrlSupportedSchemeDto> getAllUrlSupportedSchemes() {
+        return databaseModelSourceDao.getAllUrlSupportedSchemes();
     }
 
     @Override
-    public DbModelSourceConfigDto getSourceConfig(BigInteger sourceConfigId) {
-        return databaseModelSourceDao.getSourceConfig(sourceConfigId);
+    public List<DbModelSourceUrlSupportedProviderDto> getAllUrlSupportedProviders() {
+        return databaseModelSourceDao.getAllUrlSupportedProviders();
     }
 
     @Override
-    public List<DbModelSourceUrlDto> getAllSourceUrls() {
-        return databaseModelSourceDao.getAllSourceUrls();
+    public DbModelSourceConfigDto getConfig(BigInteger configId) {
+        return databaseModelSourceDao.getConfig(configId);
     }
 
     @Override
-    public List<DbModelSourceConfigDto> getAllSourceConfigs() {
-        return databaseModelSourceDao.getAllSourceConfigs();
+    public List<DbModelSourceUrlDto> getAllUrls() {
+        return databaseModelSourceDao.getAllUrls();
+    }
+
+    @Override
+    public List<DbModelSourceConfigDto> getAllConfigs() {
+        return databaseModelSourceDao.getAllConfigs();
     }
 
 }

@@ -1,5 +1,6 @@
 package io.ksmrva.visual.torch.domain.dto.canvas;
 
+import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.CanvasDto;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 

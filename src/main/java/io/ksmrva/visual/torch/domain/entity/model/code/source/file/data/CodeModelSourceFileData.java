@@ -10,7 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "source_file_data", schema = "code_model")
+@Table(name = "file_data", schema = "code_model_source")
 public class CodeModelSourceFileData extends AbstractBaseEntity<CodeModelSourceFileDataDto, CodeModelSourceFileData> {
 
     @OneToOne
@@ -84,8 +84,8 @@ public class CodeModelSourceFileData extends AbstractBaseEntity<CodeModelSourceF
         }
 
         return new EqualsBuilder().appendSuper(super.equals(o))
-                                  .append(isBinary(), that.isBinary())
                                   .append(getFile(), that.getFile())
+                                  .append(isBinary(), that.isBinary())
                                   .append(getBinaryContentUri(), that.getBinaryContentUri())
                                   .append(getTextContent(), that.getTextContent())
                                   .isEquals();

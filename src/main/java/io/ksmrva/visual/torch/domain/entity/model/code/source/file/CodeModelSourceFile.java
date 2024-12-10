@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "source_file", schema = "code_model")
+@Table(name = "file", schema = "code_model_source")
 public class CodeModelSourceFile extends AbstractBaseEntity<CodeModelSourceFileDto, CodeModelSourceFile> {
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -90,9 +90,9 @@ public class CodeModelSourceFile extends AbstractBaseEntity<CodeModelSourceFileD
         }
 
         return new EqualsBuilder().appendSuper(super.equals(o))
-                                  .append(isDirectory(), that.isDirectory())
                                   .append(getTreeNode(), that.getTreeNode())
                                   .append(getName(), that.getName())
+                                  .append(isDirectory(), that.isDirectory())
                                   .append(getData(), that.getData())
                                   .isEquals();
     }

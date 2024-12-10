@@ -3,11 +3,11 @@ package io.ksmrva.visual.torch.db.dao.model.code.source.file;
 import io.ksmrva.visual.torch.domain.dto.DtoFactory;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.CodeModelSourceFileDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.data.CodeModelSourceFileDataDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.extension.CodeModelSourceFileCodeExtensionDto;
+import io.ksmrva.visual.torch.domain.dto.model.code.source.file.extension.CodeModelSourceLanguageFileExtensionDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.tree.node.CodeModelSourceFileTreeNodeDto;
 import io.ksmrva.visual.torch.domain.entity.model.code.source.file.CodeModelSourceFile;
 import io.ksmrva.visual.torch.domain.entity.model.code.source.file.data.CodeModelSourceFileData;
-import io.ksmrva.visual.torch.domain.entity.model.code.source.file.extension.CodeModelSourceFileCodeExtension;
+import io.ksmrva.visual.torch.domain.entity.model.code.source.file.extension.CodeModelSourceLanguageFileExtension;
 import io.ksmrva.visual.torch.domain.entity.model.code.source.file.tree.node.CodeModelSourceFileTreeNode;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
@@ -81,11 +81,11 @@ public class CodeModelFileDaoImpl implements CodeModelFileDao {
     }
 
     @Override
-    public List<CodeModelSourceFileCodeExtensionDto> getFileCodeExtensions() {
-        List<CodeModelSourceFileCodeExtension> fileCodeExtensionsQueryResult;
+    public List<CodeModelSourceLanguageFileExtensionDto> getFileCodeExtensions() {
+        List<CodeModelSourceLanguageFileExtension> fileCodeExtensionsQueryResult;
         try {
             fileCodeExtensionsQueryResult = this.sessionFactory.getCurrentSession()
-                                                               .createSelectionQuery("from CodeModelSourceFileCodeExtension", CodeModelSourceFileCodeExtension.class)
+                                                               .createSelectionQuery("from CodeModelSourceLanguageFileExtension", CodeModelSourceLanguageFileExtension.class)
                                                                .getResultList();
         } catch (NoResultException e) {
             LOGGER.warn("Found no Code Model Source File Code Extensions", e);

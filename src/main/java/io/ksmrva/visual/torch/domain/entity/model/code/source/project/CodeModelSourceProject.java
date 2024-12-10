@@ -10,7 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "source_project", schema = "code_model")
+@Table(name = "project", schema = "code_model_source")
 public class CodeModelSourceProject extends AbstractBaseEntity<CodeModelSourceProjectDto, CodeModelSourceProject> {
 
     @Column(name = "name")
@@ -24,6 +24,7 @@ public class CodeModelSourceProject extends AbstractBaseEntity<CodeModelSourcePr
     public CodeModelSourceProjectDto convertToDto() {
         CodeModelSourceProjectDto dto = super.createDtoWithBaseValues(CodeModelSourceProjectDto::new);
         dto.setName(this.getName());
+
         if (this.getRootTreeNode() != null) {
             dto.setRootTreeNode(this.getRootTreeNode()
                                     .convertToDto());

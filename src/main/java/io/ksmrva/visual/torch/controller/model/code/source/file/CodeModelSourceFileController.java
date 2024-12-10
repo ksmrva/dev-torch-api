@@ -1,8 +1,8 @@
 package io.ksmrva.visual.torch.controller.model.code.source.file;
 
-import io.ksmrva.visual.torch.controller.AbstractApiController;
+import io.ksmrva.visual.torch.api.arg.constant.DevTorchApiConstants;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.CodeModelSourceFileDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.extension.CodeModelSourceFileCodeExtensionDto;
+import io.ksmrva.visual.torch.domain.dto.model.code.source.file.extension.CodeModelSourceLanguageFileExtensionDto;
 import io.ksmrva.visual.torch.domain.dto.model.code.source.file.tree.node.CodeModelSourceFileTreeNodeDto;
 import io.ksmrva.visual.torch.service.model.code.source.file.CodeModelSourceFileService;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +11,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 @RestController
-@RequestMapping(AbstractApiController.BASE_URI + "/model/code/source/file")
-public class CodeModelSourceFileController extends AbstractApiController {
+@RequestMapping(DevTorchApiConstants.CODE_MODEL_SOURCE_FILE_BASE_URI_PATH)
+public class CodeModelSourceFileController {
 
     private final CodeModelSourceFileService codeModelSourceFileService;
 
@@ -31,7 +31,7 @@ public class CodeModelSourceFileController extends AbstractApiController {
     }
 
     @GetMapping("/code/extension")
-    public @ResponseBody List<CodeModelSourceFileCodeExtensionDto> getFileCodeExtensions() {
+    public @ResponseBody List<CodeModelSourceLanguageFileExtensionDto> getFileCodeExtensions() {
         return codeModelSourceFileService.getFileCodeExtensions();
     }
 
