@@ -12,20 +12,20 @@ import java.math.BigInteger;
 
 @Entity
 @DynamicUpdate
-@Table(name = "source_file_tree_node", schema = "code_model")
+@Table(name = "file_tree_node", schema = "code_model_source")
 public class CodeModelSourceFileTreeNode extends AbstractBaseEntity<CodeModelSourceFileTreeNodeDto, CodeModelSourceFileTreeNode> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_node_id")
     private CodeModelSourceFileTreeNode parentNode;
 
-    @Formula(value = "(SELECT f.name FROM code_model.source_file f WHERE f.tree_node_id=id)")
+    @Formula(value = "(SELECT f.name FROM code_model_source.file f WHERE f.tree_node_id=id)")
     private String name;
 
-    @Formula(value = "(SELECT f.id FROM code_model.source_file f WHERE f.tree_node_id=id)")
+    @Formula(value = "(SELECT f.id FROM code_model_source.file f WHERE f.tree_node_id=id)")
     private BigInteger fileId;
 
-    @Formula(value = "(SELECT COUNT(*) > 0 FROM code_model.source_file_tree_node n WHERE n.parent_node_id=id)")
+    @Formula(value = "(SELECT COUNT(*) > 0 FROM code_model_source.file_tree_node n WHERE n.parent_node_id=id)")
     private boolean hasChildren;
 
     @Override

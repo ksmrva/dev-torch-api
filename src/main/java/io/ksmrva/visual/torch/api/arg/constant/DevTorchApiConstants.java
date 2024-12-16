@@ -19,7 +19,9 @@ public abstract class DevTorchApiConstants {
      */
     public final static String DATABASE_MODEL_BASE_URI_PATH = MODEL_BASE_URI_PATH + "/db";
     public final static String DATABASE_MODEL_SOURCE_BASE_URI_PATH = DATABASE_MODEL_BASE_URI_PATH + "/source";
-    public final static String DATABASE_MODEL_COMPONENT_BASE_URI_PATH = DATABASE_MODEL_BASE_URI_PATH + "/component";
+    public final static String DATABASE_MODEL_DETAIL_BASE_URI_PATH = DATABASE_MODEL_BASE_URI_PATH + "/detail";
+    public final static String DATABASE_MODEL_SQL_DETAIL_BASE_URI_PATH = DATABASE_MODEL_DETAIL_BASE_URI_PATH + "/sql";
+    public final static String DATABASE_MODEL_NOSQL_DETAIL_BASE_URI_PATH = DATABASE_MODEL_DETAIL_BASE_URI_PATH + "/nosql";
 
     /**
      * Code URI Path values
@@ -28,7 +30,7 @@ public abstract class DevTorchApiConstants {
     public final static String CODE_MODEL_SOURCE_BASE_URI_PATH = CODE_MODEL_BASE_URI_PATH + "/source";
     public final static String CODE_MODEL_SOURCE_FILE_BASE_URI_PATH = CODE_MODEL_SOURCE_BASE_URI_PATH + "/file";
     public final static String CODE_MODEL_SOURCE_PROJECT_BASE_URI_PATH = CODE_MODEL_SOURCE_BASE_URI_PATH + "/project";
-    public final static String CODE_MODEL_COMPONENT_BASE_URI_PATH = CODE_MODEL_BASE_URI_PATH + "/component";
+    public final static String CODE_MODEL_DETAIL_BASE_URI_PATH = CODE_MODEL_BASE_URI_PATH + "/detail";
 
     /**
      * Documentation URI Path values

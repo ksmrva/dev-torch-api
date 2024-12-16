@@ -1,8 +1,13 @@
--- ******************************************************************************
----------------------------------------------------------------------------------
--- Source
----------------------------------------------------------------------------------
--- ******************************************************************************
+DROP TABLE IF EXISTS db_model_detail.sql_foreign_key;
+DROP TABLE IF EXISTS db_model_detail.sql_primary_key_column;
+DROP TABLE IF EXISTS db_model_detail.sql_primary_key;
+DROP TABLE IF EXISTS db_model_detail.sql_column;
+DROP TABLE IF EXISTS db_model_detail.sql_table;
+DROP TABLE IF EXISTS db_model_detail.sql_database;
+DROP TABLE IF EXISTS db_model_detail.field_category;
+DROP TABLE IF EXISTS db_model_detail.collection_category;
+
+DROP SCHEMA IF EXISTS db_model_detail;
 
 DROP TABLE IF EXISTS db_model_source.data_type;
 DROP TABLE IF EXISTS db_model_source.config;
@@ -14,6 +19,13 @@ DROP TABLE IF EXISTS db_model_source.config_supported_driver;
 
 DROP SCHEMA IF EXISTS db_model_source;
 
+-- <editor-fold desc="Source">
+-- ******************************************************************************
+---------------------------------------------------------------------------------
+-- Source
+---------------------------------------------------------------------------------
+-- ******************************************************************************
+
 ---------------------------------------------------------------------------------
 -- Schema: db_model_source
 ---------------------------------------------------------------------------------
@@ -22,7 +34,7 @@ CREATE SCHEMA IF NOT EXISTS db_model_source
     AUTHORIZATION postgresadmin;
 
 COMMENT ON SCHEMA db_model_source
-    IS 'Entities used to define the configuration details of a Source that can be used to create Components for a Database Model';
+    IS 'Entities used to define the configuration details of a Source that can be used to create Details for a Database Model';
 
 ---------------------------------------------------------------------------------
 -- Table: db_model_source.config_supported_driver
@@ -157,10 +169,10 @@ ALTER TABLE IF EXISTS db_model_source.preset
     OWNER to postgresadmin;
 
 COMMENT ON TABLE db_model_source.preset
-    IS 'Stores preset combinations of values that work together when creating Database Model Source records';
+    IS 'Stores preset combinations of values that work together when creating Database Model Source entries';
 
 COMMENT ON CONSTRAINT "sourcePresetNameUniqueConstraint" ON db_model_source.preset
-    IS 'Ensures that the Name value is unique among all Database Model Source Preset records';
+    IS 'Ensures that the Name value is unique among all Database Model Source Preset entries';
 
 COMMENT ON CONSTRAINT "sourcePresetDriverNameFKConstraint" ON db_model_source.preset
     IS 'Links the Driver Name field with a value from the Database Model Source Supported Driver table';
@@ -284,76 +296,30 @@ ALTER TABLE IF EXISTS db_model_source.data_type
 
 COMMENT ON TABLE db_model_source.data_type
     IS 'Stores information about the various types of Data that the can be stored within any given Database';
+-- </editor-fold>
 
+-- <editor-fold desc="Detail">
 -- ******************************************************************************
 ---------------------------------------------------------------------------------
--- Component
+-- Detail
 ---------------------------------------------------------------------------------
 -- ******************************************************************************
 
-DROP TABLE IF EXISTS db_model_component.foreign_key;
-DROP TABLE IF EXISTS db_model_component.primary_key_column;
-DROP TABLE IF EXISTS db_model_component.primary_key;
-DROP TABLE IF EXISTS db_model_component.column;
-DROP TABLE IF EXISTS db_model_component.column_category;
-DROP TABLE IF EXISTS db_model_component.table;
-DROP TABLE IF EXISTS db_model_component.table_category;
-DROP TABLE IF EXISTS db_model_component.database;
-
-DROP SCHEMA IF EXISTS db_model_component;
-
 ---------------------------------------------------------------------------------
--- Schema: db_model_component
+-- Schema: db_model_detail
 ---------------------------------------------------------------------------------
 
-CREATE SCHEMA IF NOT EXISTS db_model_component
+CREATE SCHEMA IF NOT EXISTS db_model_detail
     AUTHORIZATION postgresadmin;
 
-COMMENT ON SCHEMA db_model_component
-    IS 'Entities used to describe the Components of a Database Model used to construct Documentation and Diagrams';
+COMMENT ON SCHEMA db_model_detail
+    IS 'Entities used to describe the Details of a Database Model used to construct Documentation and Diagrams';
 
 ---------------------------------------------------------------------------------
--- Table: db_model_component.database
+-- Table: db_model_detail.collection_category
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS db_model_component.database
-(
-    id               bigserial                         NOT NULL,
-    source_config_id bigint                            NOT NULL,
-    name             text COLLATE pg_catalog."default" NOT NULL,
-    schema_name      text COLLATE pg_catalog."default" NOT NULL,
-    description      text COLLATE pg_catalog."default",
-    created_uid      text COLLATE pg_catalog."default" NOT NULL,
-    created_date     date                              NOT NULL,
-    modified_uid     text COLLATE pg_catalog."default" NOT NULL,
-    modified_date    date                              NOT NULL,
-    CONSTRAINT "dbComponentPKConstraint" PRIMARY KEY (id),
-    CONSTRAINT "dbComponentDbFieldsUniqueConstraint" UNIQUE (name, schema_name)
-        INCLUDE (source_config_id, name, schema_name),
-    CONSTRAINT "sourceConfigFKConstraint" FOREIGN KEY (source_config_id)
-        REFERENCES db_model_source.config (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-)
-    TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS db_model_component.database
-    OWNER to postgresadmin;
-
-COMMENT ON TABLE db_model_component.database
-    IS 'Stores metadata describing the structure and contents of a Database';
-
-COMMENT ON CONSTRAINT "dbComponentDbFieldsUniqueConstraint" ON db_model_component.database
-    IS 'Ensures that the combination of Database Name, Schema Name, and Database Model Source Config are unique among all Databases';
-
-COMMENT ON CONSTRAINT "sourceConfigFKConstraint" ON db_model_component.database
-    IS 'Links this Database Model with a Database Model Source Config';
-
----------------------------------------------------------------------------------
--- Table: db_model_component.table_category
----------------------------------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS db_model_component.table_category
+CREATE TABLE IF NOT EXISTS db_model_detail.collection_category
 (
     id            bigserial                         NOT NULL,
     name          text COLLATE pg_catalog."default" NOT NULL,
@@ -361,17 +327,17 @@ CREATE TABLE IF NOT EXISTS db_model_component.table_category
     created_date  date                              NOT NULL,
     modified_uid  text COLLATE pg_catalog."default" NOT NULL,
     modified_date date                              NOT NULL,
-    CONSTRAINT "tableCategoryPKConstraint" PRIMARY KEY (id)
+    CONSTRAINT "collectionCategoryPKConstraint" PRIMARY KEY (id)
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS db_model_component.table_category
+ALTER TABLE IF EXISTS db_model_detail.collection_category
     OWNER to postgresadmin;
 
-COMMENT ON TABLE db_model_component.table_category
-    IS 'A Category that can be assigned to a Table that defines how the Table''s data relates to overall Domain, such as an Entity Table that stores the major entity Objects such as a Table named Product storing the products for a retail store';
+COMMENT ON TABLE db_model_detail.collection_category
+    IS 'A Category that can be assigned to an Database Collection (such as a Table for SQL or a Collection of Documents for NoSQL) that defines how its data relates to the overall Domain; For instance, an Entity Table corresponds with core business objects, such as a Product or Purchase object for a retail website';
 
-INSERT INTO db_model_component.table_category (name, created_uid, created_date, modified_uid, modified_date)
+INSERT INTO db_model_detail.collection_category (name, created_uid, created_date, modified_uid, modified_date)
 VALUES ('Entity', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('Lookup', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('Xref', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
@@ -382,51 +348,15 @@ VALUES ('Entity', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('Application', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('Staging', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('Audit', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ('Misc', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
+       ('Various', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('Undefined', 'kmark', '2024-09-23', 'kmark', '2024-09-23');
 
 ---------------------------------------------------------------------------------
--- Table: db_model_component.table
+-- Table: db_model_detail.field_category
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS db_model_component.table
-(
-    id            bigserial                         NOT NULL,
-    database_id   bigint                            NOT NULL,
-    category_id   bigint                            NOT NULL,
-    name          text COLLATE pg_catalog."default" NOT NULL,
-    description   text COLLATE pg_catalog."default",
-    created_uid   text COLLATE pg_catalog."default" NOT NULL,
-    created_date  date                              NOT NULL,
-    modified_uid  text COLLATE pg_catalog."default" NOT NULL,
-    modified_date date                              NOT NULL,
-    CONSTRAINT "tableComponentPKConstraint" PRIMARY KEY (id),
-    CONSTRAINT "tableComponentUnderlyingDatabaseFKConstraint" FOREIGN KEY (database_id)
-        REFERENCES db_model_component.database (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT "tableCategoryFKConstraint" FOREIGN KEY (category_id)
-        REFERENCES db_model_component.table_category (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-)
-    TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS db_model_component.table
-    OWNER to postgresadmin;
-
-COMMENT ON TABLE db_model_component.table
-    IS 'Stores metadata describing the structure and contents of a Database Table';
-
-COMMENT ON CONSTRAINT "tableComponentUnderlyingDatabaseFKConstraint" ON db_model_component.table
-    IS 'Links this Table Component to a Database Component';
-COMMENT ON CONSTRAINT "tableCategoryFKConstraint" ON db_model_component.table
-    IS 'Links this Table Component to a Table Category';
-
----------------------------------------------------------------------------------
--- Table: db_model_component.column_category
----------------------------------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS db_model_component.column_category
+CREATE TABLE IF NOT EXISTS db_model_detail.field_category
 (
     id            bigserial                         NOT NULL,
     name          text COLLATE pg_catalog."default" NOT NULL,
@@ -434,32 +364,114 @@ CREATE TABLE IF NOT EXISTS db_model_component.column_category
     created_date  date                              NOT NULL,
     modified_uid  text COLLATE pg_catalog."default" NOT NULL,
     modified_date date                              NOT NULL,
-    CONSTRAINT "columnCategoryPKConstraint" PRIMARY KEY (id)
+    CONSTRAINT "fieldCategoryPKConstraint" PRIMARY KEY (id)
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS db_model_component.column_category
+ALTER TABLE IF EXISTS db_model_detail.field_category
     OWNER to postgresadmin;
 
-COMMENT ON TABLE db_model_component.column_category
-    IS 'A Category that can be assigned to a Column that defines how the Column''s data relates to its Database Table, such as an Identity Column relates the Identity of the Table';
+COMMENT ON TABLE db_model_detail.field_category
+    IS 'A Category that can be assigned to an Database Field (such as a Column for SQL or a Field for NoSQL) that defines how its data relates to its containing Collection; For instance, the SQL Column used in a Primary Key serves as the identifying Field for a Table';
 
-INSERT INTO db_model_component.column_category(name, created_uid, created_date, modified_uid, modified_date)
+INSERT INTO db_model_detail.field_category(name, created_uid, created_date, modified_uid, modified_date)
 VALUES ('Identity', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('Domain', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('Audit', 'kmark', '2024-09-23', 'kmark', '2024-09-23'),
        ('Undefined', 'kmark', '2024-09-23', 'kmark', '2024-09-23');
 
+-- <editor-fold desc="Detail-SQL">
 ---------------------------------------------------------------------------------
--- Table: db_model_component.column
+---------------------------------------------------------------------------------
+-- Detail-SQL
+---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS db_model_component.column
+---------------------------------------------------------------------------------
+-- Table: db_model_detail.sql_database
+---------------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS db_model_detail.sql_database
+(
+    id               bigserial                         NOT NULL,
+    source_config_id bigint                            NOT NULL,
+    name             text COLLATE pg_catalog."default" NOT NULL,
+    schema_name      text COLLATE pg_catalog."default" NOT NULL,
+    description      text COLLATE pg_catalog."default",
+    created_uid      text COLLATE pg_catalog."default" NOT NULL,
+    created_date     date                              NOT NULL,
+    modified_uid     text COLLATE pg_catalog."default" NOT NULL,
+    modified_date    date                              NOT NULL,
+    CONSTRAINT "sqlDbDetailPKConstraint" PRIMARY KEY (id),
+    CONSTRAINT "sqlDbPathUniqueConstraint" UNIQUE (name, schema_name)
+        INCLUDE (source_config_id, name, schema_name),
+    CONSTRAINT "sqlDbSourceConfigFKConstraint" FOREIGN KEY (source_config_id)
+        REFERENCES db_model_source.config (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+    TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS db_model_detail.sql_database
+    OWNER to postgresadmin;
+
+COMMENT ON TABLE db_model_detail.sql_database
+    IS 'Stores metadata describing the structure of an SQL Database';
+
+COMMENT ON CONSTRAINT "sqlDbPathUniqueConstraint" ON db_model_detail.sql_database
+    IS 'Ensures that the combination of Database Name, Schema Name, and Database Model Source Config (considered here to be the Path to the Database) are unique among all SQL Databases';
+
+COMMENT ON CONSTRAINT "sqlDbSourceConfigFKConstraint" ON db_model_detail.sql_database
+    IS 'Links this SQL Database with a Database Model Source Config';
+
+---------------------------------------------------------------------------------
+-- Table: db_model_detail.sql_table
+---------------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS db_model_detail.sql_table
+(
+    id                     bigserial                         NOT NULL,
+    database_id            bigint                            NOT NULL,
+    collection_category_id bigint                            NOT NULL,
+    name                   text COLLATE pg_catalog."default" NOT NULL,
+    description            text COLLATE pg_catalog."default",
+    created_uid            text COLLATE pg_catalog."default" NOT NULL,
+    created_date           date                              NOT NULL,
+    modified_uid           text COLLATE pg_catalog."default" NOT NULL,
+    modified_date          date                              NOT NULL,
+    CONSTRAINT "sqlTableDetailPKConstraint" PRIMARY KEY (id),
+    CONSTRAINT "sqlTableUnderlyingDatabaseFKConstraint" FOREIGN KEY (database_id)
+        REFERENCES db_model_detail.sql_database (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT "sqlTableCollectionCategoryFKConstraint" FOREIGN KEY (collection_category_id)
+        REFERENCES db_model_detail.collection_category (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+    TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS db_model_detail.sql_table
+    OWNER to postgresadmin;
+
+COMMENT ON TABLE db_model_detail.sql_table
+    IS 'Stores metadata describing the structure of an SQL Table';
+
+COMMENT ON CONSTRAINT "sqlTableUnderlyingDatabaseFKConstraint" ON db_model_detail.sql_table
+    IS 'Links this SQL Table Detail to the Database that contains the Table';
+COMMENT ON CONSTRAINT "sqlTableCollectionCategoryFKConstraint" ON db_model_detail.sql_table
+    IS 'Links this SQL Table Detail to a Database Collection Category';
+
+---------------------------------------------------------------------------------
+-- Table: db_model_detail.sql_column
+---------------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS db_model_detail.sql_column
 (
     id                bigserial                         NOT NULL,
     table_id          bigint                            NOT NULL,
     data_type_id      bigint                            NOT NULL,
-    category_id       bigint                            NOT NULL,
+    field_category_id bigint                            NOT NULL,
     name              text COLLATE pg_catalog."default" NOT NULL,
     description       text COLLATE pg_catalog."default",
     is_nullable       boolean                           NOT NULL,
@@ -469,45 +481,45 @@ CREATE TABLE IF NOT EXISTS db_model_component.column
     created_date      date                              NOT NULL,
     modified_uid      text COLLATE pg_catalog."default" NOT NULL,
     modified_date     date                              NOT NULL,
-    CONSTRAINT "columnComponentPKConstraint" PRIMARY KEY (id),
-    CONSTRAINT "tableAndColumnIndexUniqueConstraint" UNIQUE (table_id, column_index)
+    CONSTRAINT "sqlColumnDetailPKConstraint" PRIMARY KEY (id),
+    CONSTRAINT "sqlColumnUniqueIndexWithinTableConstraint" UNIQUE (table_id, column_index)
         INCLUDE (table_id, column_index),
-    CONSTRAINT "columnCategoryFKConstraint" FOREIGN KEY (category_id)
-        REFERENCES db_model_component.column_category (id) MATCH SIMPLE
+    CONSTRAINT "sqlColumnFieldCategoryFKConstraint" FOREIGN KEY (field_category_id)
+        REFERENCES db_model_detail.field_category (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT "dataTypeFKConstraint" FOREIGN KEY (data_type_id)
+    CONSTRAINT "sqlColumnDataTypeFKConstraint" FOREIGN KEY (data_type_id)
         REFERENCES db_model_source.data_type (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT "columnComponentUnderlyingTableFKConstraint" FOREIGN KEY (table_id)
-        REFERENCES db_model_component.table (id) MATCH SIMPLE
+    CONSTRAINT "sqlColumnUnderlyingTableFKConstraint" FOREIGN KEY (table_id)
+        REFERENCES db_model_detail.sql_table (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS db_model_component.column
+ALTER TABLE IF EXISTS db_model_detail.sql_column
     OWNER to postgresadmin;
 
-COMMENT ON TABLE db_model_component.column
-    IS 'Stores metadata describing the structure and contents of a Database Column';
+COMMENT ON TABLE db_model_detail.sql_column
+    IS 'Stores metadata describing the structure of an SQL Column';
 
-COMMENT ON CONSTRAINT "tableAndColumnIndexUniqueConstraint" ON db_model_component.column
-    IS 'Ensures that within any given Table, all the Column Indices are unique';
+COMMENT ON CONSTRAINT "sqlColumnUniqueIndexWithinTableConstraint" ON db_model_detail.sql_column
+    IS 'Ensures that the declared Index of this SQL Column is unique within its contained Table';
 
-COMMENT ON CONSTRAINT "columnCategoryFKConstraint" ON db_model_component.column
-    IS 'Links this Column Component to a Column Category';
-COMMENT ON CONSTRAINT "dataTypeFKConstraint" ON db_model_component.column
-    IS 'Links this Column Component to a Data Type';
-COMMENT ON CONSTRAINT "columnComponentUnderlyingTableFKConstraint" ON db_model_component.column
-    IS 'Links this Column Component to its underlying Table Component';
+COMMENT ON CONSTRAINT "sqlColumnFieldCategoryFKConstraint" ON db_model_detail.sql_column
+    IS 'Links this SQL Column Detail to a Field Category';
+COMMENT ON CONSTRAINT "sqlColumnDataTypeFKConstraint" ON db_model_detail.sql_column
+    IS 'Links this SQL Column Detail to a Data Type';
+COMMENT ON CONSTRAINT "sqlColumnUnderlyingTableFKConstraint" ON db_model_detail.sql_column
+    IS 'Links this SQL Column Detail to the Table that contains it';
 
 ---------------------------------------------------------------------------------
--- Table: db_model_component.primary_key
+-- Table: db_model_detail.sql_primary_key
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS db_model_component.primary_key
+CREATE TABLE IF NOT EXISTS db_model_detail.sql_primary_key
 (
     id            bigserial                         NOT NULL,
     table_id      bigint                            NOT NULL,
@@ -517,28 +529,28 @@ CREATE TABLE IF NOT EXISTS db_model_component.primary_key
     created_date  date                              NOT NULL,
     modified_uid  text COLLATE pg_catalog."default" NOT NULL,
     modified_date date                              NOT NULL,
-    CONSTRAINT "primaryKeyComponentPKConstraint" PRIMARY KEY (id),
-    CONSTRAINT "primaryKeyUnderlyingTableFKConstraint" FOREIGN KEY (table_id)
-        REFERENCES db_model_component.table (id) MATCH SIMPLE
+    CONSTRAINT "sqlPrimaryKeyDetailPKConstraint" PRIMARY KEY (id),
+    CONSTRAINT "sqlPrimaryKeyUnderlyingTableFKConstraint" FOREIGN KEY (table_id)
+        REFERENCES db_model_detail.sql_table (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS db_model_component.primary_key
+ALTER TABLE IF EXISTS db_model_detail.sql_primary_key
     OWNER to postgresadmin;
 
-COMMENT ON TABLE db_model_component.primary_key
-    IS 'Holds metadata about a Database Table''s Primary Key Constraint';
+COMMENT ON TABLE db_model_detail.sql_primary_key
+    IS 'Holds metadata about a Primary Key Constraint for an SQL Database Table';
 
-COMMENT ON CONSTRAINT "primaryKeyUnderlyingTableFKConstraint" ON db_model_component.primary_key
-    IS 'Links this Primary Key Constraint to a Table Component';
+COMMENT ON CONSTRAINT "sqlPrimaryKeyUnderlyingTableFKConstraint" ON db_model_detail.sql_primary_key
+    IS 'Links this SQL Primary Key Constraint to the Table that contains it';
 
 ---------------------------------------------------------------------------------
--- Table: db_model_component.primary_key_column
+-- Table: db_model_detail.sql_primary_key_column
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS db_model_component.primary_key_column
+CREATE TABLE IF NOT EXISTS db_model_detail.sql_primary_key_column
 (
     id             bigserial                         NOT NULL,
     primary_key_id bigint                            NOT NULL,
@@ -547,34 +559,34 @@ CREATE TABLE IF NOT EXISTS db_model_component.primary_key_column
     created_date   date                              NOT NULL,
     modified_uid   text COLLATE pg_catalog."default" NOT NULL,
     modified_date  date                              NOT NULL,
-    CONSTRAINT "primaryKeyColumnComponentPKConstraint" PRIMARY KEY (id),
-    CONSTRAINT "primaryKeyColumnUnderlyingColumnFKConstraint" FOREIGN KEY (column_id)
-        REFERENCES db_model_component.column (id) MATCH SIMPLE
+    CONSTRAINT "sqlPrimaryKeyColumnDetailPKConstraint" PRIMARY KEY (id),
+    CONSTRAINT "sqlPrimaryKeyColumnUnderlyingColumnFKConstraint" FOREIGN KEY (column_id)
+        REFERENCES db_model_detail.sql_column (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT "primaryKeyColumnUnderlyingPrimaryKeyFKConstraint" FOREIGN KEY (primary_key_id)
-        REFERENCES db_model_component.primary_key (id) MATCH SIMPLE
+    CONSTRAINT "sqlPrimaryKeyColumnUnderlyingPrimaryKeyFKConstraint" FOREIGN KEY (primary_key_id)
+        REFERENCES db_model_detail.sql_primary_key (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS db_model_component.primary_key_column_model
+ALTER TABLE IF EXISTS db_model_detail.sql_primary_key_column
     OWNER to postgresadmin;
 
-COMMENT ON TABLE db_model_component.primary_key_column
-    IS 'Maps a Column Component to a Primary Key Constraint Component';
+COMMENT ON TABLE db_model_detail.sql_primary_key_column
+    IS 'Links an SQL Primary Key Constraint with a Column that is used within its definition';
 
-COMMENT ON CONSTRAINT "primaryKeyColumnUnderlyingColumnFKConstraint" ON db_model_component.primary_key_column
-    IS 'Links this Primary Key Component to a Column Component';
-COMMENT ON CONSTRAINT "primaryKeyColumnUnderlyingPrimaryKeyFKConstraint" ON db_model_component.primary_key_column
-    IS 'Links this Primary Key Component to a Primary Key Component';
+COMMENT ON CONSTRAINT "sqlPrimaryKeyColumnUnderlyingColumnFKConstraint" ON db_model_detail.sql_primary_key_column
+    IS 'Links this SQL Primary Key Column to the Column on which it is applied';
+COMMENT ON CONSTRAINT "sqlPrimaryKeyColumnUnderlyingPrimaryKeyFKConstraint" ON db_model_detail.sql_primary_key_column
+    IS 'Links this SQL Primary Key Column to a Primary Key Constraint Detail';
 
 ---------------------------------------------------------------------------------
--- Table: db_model_component.foreign_key
+-- Table: db_model_detail.sql_foreign_key
 ---------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS db_model_component.foreign_key
+CREATE TABLE IF NOT EXISTS db_model_detail.sql_foreign_key
 (
     id                   bigserial                         NOT NULL,
     table_id             bigint                            NOT NULL,
@@ -587,41 +599,52 @@ CREATE TABLE IF NOT EXISTS db_model_component.foreign_key
     created_date         date                              NOT NULL,
     modified_uid         text COLLATE pg_catalog."default" NOT NULL,
     modified_date        date                              NOT NULL,
-    CONSTRAINT "foreignKeyComponentPKConstraint" PRIMARY KEY (id),
-    CONSTRAINT "localColumnFKConstraint" FOREIGN KEY (local_column_id)
-        REFERENCES db_model_component.column (id) MATCH SIMPLE
+    CONSTRAINT "sqlForeignKeyDetailPKConstraint" PRIMARY KEY (id),
+    CONSTRAINT "sqlForeignKeyLocalColumnFKConstraint" FOREIGN KEY (local_column_id)
+        REFERENCES db_model_detail.sql_column (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT "referencedColumnFKConstraint" FOREIGN KEY (referenced_column_id)
-        REFERENCES db_model_component.column (id) MATCH SIMPLE
+    CONSTRAINT "sqlForeignKeyReferencedColumnFKConstraint" FOREIGN KEY (referenced_column_id)
+        REFERENCES db_model_detail.sql_column (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT "referencedTableFKConstraint" FOREIGN KEY (referenced_table_id)
-        REFERENCES db_model_component.table (id) MATCH SIMPLE
+    CONSTRAINT "sqlForeignKeyReferencedTableFKConstraint" FOREIGN KEY (referenced_table_id)
+        REFERENCES db_model_detail.sql_table (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT "foreignKeyComponentUnderlyingTableFKConstraint" FOREIGN KEY (table_id)
-        REFERENCES db_model_component.table (id) MATCH SIMPLE
+    CONSTRAINT "sqlForeignKeyUnderlyingTableFKConstraint" FOREIGN KEY (table_id)
+        REFERENCES db_model_detail.sql_table (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT "localColumnNotEqualToReferencedColumnUniqueConstraint" CHECK (local_column_id <> referenced_column_id)
+    CONSTRAINT "sqlForeignKeyLocalColumnNotEqualToReferencedCheckConstraint" CHECK (local_column_id <> referenced_column_id)
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS db_model_component.foreign_key
+ALTER TABLE IF EXISTS db_model_detail.sql_foreign_key
     OWNER to postgresadmin;
 
-COMMENT ON TABLE db_model_component.foreign_key
-    IS 'Holds metadata about a Database Table''s Foreign Key Constraints';
+COMMENT ON TABLE db_model_detail.sql_foreign_key
+    IS 'Holds metadata about a Foreign Key Constraint for an SQL Database Table';
 
-COMMENT ON CONSTRAINT "localColumnFKConstraint" ON db_model_component.foreign_key
-    IS 'Links this Foreign Key Constraint to the Column Component for which the Foreign Key is applied';
-COMMENT ON CONSTRAINT "referencedColumnFKConstraint" ON db_model_component.foreign_key
-    IS 'Links this Foreign Key Constraint to the Column Component for which the Foreign Key references';
-COMMENT ON CONSTRAINT "referencedTableFKConstraint" ON db_model_component.foreign_key
-    IS 'Links this Foreign Key Component to the Table it references';
-COMMENT ON CONSTRAINT "foreignKeyComponentUnderlyingTableFKConstraint" ON db_model_component.foreign_key
-    IS 'Links this Foreign Key Constraint to a Table Component';
+COMMENT ON CONSTRAINT "sqlForeignKeyLocalColumnFKConstraint" ON db_model_detail.sql_foreign_key
+    IS 'Links this SQL Foreign Key Constraint to the Column on which is applied';
+COMMENT ON CONSTRAINT "sqlForeignKeyReferencedColumnFKConstraint" ON db_model_detail.sql_foreign_key
+    IS 'Links this SQL Foreign Key Constraint to the Column for which the Foreign Key references';
+COMMENT ON CONSTRAINT "sqlForeignKeyReferencedTableFKConstraint" ON db_model_detail.sql_foreign_key
+    IS 'Links this SQL Foreign Key Constraint to the Table it references';
+COMMENT ON CONSTRAINT "sqlForeignKeyUnderlyingTableFKConstraint" ON db_model_detail.sql_foreign_key
+    IS 'Links this SQL Foreign Key Constraint to the Table that contains it';
 
-COMMENT ON CONSTRAINT "localColumnNotEqualToReferencedColumnUniqueConstraint" ON db_model_component.foreign_key
-    IS 'Ensures that the Local Column is not the same as the Referenced Column';
+COMMENT ON CONSTRAINT "sqlForeignKeyLocalColumnNotEqualToReferencedCheckConstraint" ON db_model_detail.sql_foreign_key
+    IS 'Ensures that this SQL Foreign Key''s Local Column is not the same as its Referenced Column';
+-- </editor-fold>
+
+-- <editor-fold desc="Detail-NoSQL">
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+-- Detail-NoSQL
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+-- </editor-fold>
+
+-- </editor-fold>

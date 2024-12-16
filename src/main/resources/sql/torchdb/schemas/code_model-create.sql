@@ -1,3 +1,4 @@
+-- <editor-fold desc="Source">
 -- ******************************************************************************
 ---------------------------------------------------------------------------------
 -- Source
@@ -8,7 +9,7 @@ DROP TABLE IF EXISTS code_model_source.file_data;
 DROP TABLE IF EXISTS code_model_source.file;
 DROP TABLE IF EXISTS code_model_source.project;
 DROP TABLE IF EXISTS code_model_source.file_tree_node;
-DROP TABLE IF EXISTS code_model_source.file_code_extension;
+DROP TABLE IF EXISTS code_model_source.language_file_extension;
 DROP TABLE IF EXISTS code_model_source.language;
 
 DROP SCHEMA IF EXISTS code_model_source;
@@ -21,7 +22,7 @@ CREATE SCHEMA IF NOT EXISTS code_model_source
     AUTHORIZATION postgresadmin;
 
 COMMENT ON SCHEMA code_model_source
-    IS 'Entities used to define the configuration details of a Source that can be used to create Components for a Code Model';
+    IS 'Entities used to define the configuration details of a Source that can be used to create Details for a Code Model';
 
 ---------------------------------------------------------------------------------
 -- Table: code_model_source.language
@@ -380,7 +381,7 @@ CREATE TABLE IF NOT EXISTS code_model_source.file_tree_node
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS code_model_source.source_file_tree_node
+ALTER TABLE IF EXISTS code_model_source.file_tree_node
     OWNER to postgresadmin;
 
 COMMENT ON TABLE code_model_source.file_tree_node
@@ -415,7 +416,7 @@ ALTER TABLE IF EXISTS code_model_source.file
     OWNER to postgresadmin;
 
 COMMENT ON TABLE code_model_source.file
-    IS 'Represents a File within a Codebase that acts as a Source to create Components of a Code Model';
+    IS 'Represents a File within a Codebase that acts as a Source to create Details of a Code Model';
 
 COMMENT ON CONSTRAINT "sourceFileTreeNodeFKConstraint" ON code_model_source.file
     IS 'Links this Source File with a File Tree Node entity which defines the backing File Structure of the Files within a Codebase';
@@ -437,13 +438,13 @@ CREATE TABLE IF NOT EXISTS code_model_source.file_data
     modified_date      date                              NOT NULL,
     CONSTRAINT "sourceFileDataPKConstraint" PRIMARY KEY (id),
     CONSTRAINT "sourceFileDataUnderlyingFileFKConstraint" FOREIGN KEY (file_id)
-        REFERENCES code_model_source.file_data (id) MATCH SIMPLE
+        REFERENCES code_model_source.file (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS code_model_source.source_file_data
+ALTER TABLE IF EXISTS code_model_source.file_data
     OWNER to postgresadmin;
 
 COMMENT ON TABLE code_model_source.file_data
@@ -475,7 +476,7 @@ CREATE TABLE IF NOT EXISTS code_model_source.project
 )
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS code_model_source.source_project
+ALTER TABLE IF EXISTS code_model_source.project
     OWNER to postgresadmin;
 
 COMMENT ON TABLE code_model_source.project
@@ -486,9 +487,12 @@ COMMENT ON CONSTRAINT "sourceProjectNameUniqueConstraint" ON code_model_source.p
 
 COMMENT ON CONSTRAINT "sourceProjectRootTreeNodeFKConstraint" ON code_model_source.project
     IS 'Links this Source Project with a File Tree Node that represents the Root File Node for the Project';
+-- </editor-fold>
 
+-- <editor-fold desc="Detail">
 -- ******************************************************************************
 ---------------------------------------------------------------------------------
--- Component
+-- Detail
 ---------------------------------------------------------------------------------
 -- ******************************************************************************
+-- </editor-fold>
