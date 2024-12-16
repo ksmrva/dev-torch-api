@@ -18,7 +18,7 @@
     <description>Primary API for the Dev Torch system</description>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>23</java.version>
     </properties>
 
     <url/>
@@ -49,6 +49,18 @@
                     <!--<skipTests>true</skipTests>-->
                 </configuration>
             </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-war-plugin</artifactId>-->
+            <!--                <version>3.4.0</version>-->
+            <!--                <configuration>-->
+            <!--                    <archive>-->
+            <!--                        <manifest>-->
+            <!--                            <addClasspath>true</addClasspath>-->
+            <!--                        </manifest>-->
+            <!--                    </archive>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
