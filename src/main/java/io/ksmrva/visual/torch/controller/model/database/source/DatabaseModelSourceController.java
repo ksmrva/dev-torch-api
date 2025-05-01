@@ -1,13 +1,13 @@
 package io.ksmrva.visual.torch.controller.model.database.source;
 
 import io.ksmrva.visual.torch.api.arg.constant.DevTorchApiConstants;
-import io.ksmrva.visual.torch.domain.dto.model.database.source.data.DbModelSourceDataTypeDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.source.config.DbModelSourceConfigDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.source.config.driver.DbModelSourceConfigSupportedDriverDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.source.preset.DbModelSourcePresetDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.source.url.DbModelSourceUrlDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.source.url.provider.DbModelSourceUrlSupportedProviderDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.source.url.scheme.DbModelSourceUrlSupportedSchemeDto;
+import io.ksmrva.visual.torch.data.dto.model.database.source.data.DbModelSourceDataTypeDto;
+import io.ksmrva.visual.torch.data.dto.model.database.source.config.DbModelSourceConfigDto;
+import io.ksmrva.visual.torch.data.dto.model.database.source.config.driver.DbModelSourceConfigSupportedDriverDto;
+import io.ksmrva.visual.torch.data.dto.model.database.source.preset.DbModelSourcePresetDto;
+import io.ksmrva.visual.torch.data.dto.model.database.source.url.DbModelSourceUrlDto;
+import io.ksmrva.visual.torch.data.dto.model.database.source.url.provider.DbModelSourceUrlSupportedProviderDto;
+import io.ksmrva.visual.torch.data.dto.model.database.source.url.scheme.DbModelSourceUrlSupportedSchemeDto;
 import io.ksmrva.visual.torch.service.model.database.source.DatabaseModelSourceService;
 import org.springframework.web.bind.annotation.*;
 

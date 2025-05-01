@@ -1,10 +1,10 @@
 package io.ksmrva.visual.torch.db.dao.model.code.source.project;
 
 import io.ksmrva.visual.torch.db.dao.model.code.source.file.CodeModelFileDao;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.CodeModelSourceFileDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.project.CodeModelSourceProjectDto;
-import io.ksmrva.visual.torch.domain.entity.model.code.source.file.CodeModelSourceFile;
-import io.ksmrva.visual.torch.domain.entity.model.code.source.project.CodeModelSourceProject;
+import io.ksmrva.visual.torch.data.dto.model.code.source.file.CodeModelSourceFileDto;
+import io.ksmrva.visual.torch.data.dto.model.code.source.project.CodeModelSourceProjectDto;
+import io.ksmrva.visual.torch.data.entity.model.code.source.file.CodeModelSourceFile;
+import io.ksmrva.visual.torch.data.entity.model.code.source.project.CodeModelSourceProject;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.transaction.Transactional;

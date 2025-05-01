@@ -1,9 +1,9 @@
 package io.ksmrva.visual.torch.service.documentation.tool.canvas;
 
 import io.ksmrva.visual.torch.db.dao.documentation.tool.canvas.CanvasDao;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.CanvasDto;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.cell.CanvasCustomCellDto;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.cell.CanvasLinkCellDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.CanvasDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.cell.CanvasCustomCellDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.cell.CanvasLinkCellDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

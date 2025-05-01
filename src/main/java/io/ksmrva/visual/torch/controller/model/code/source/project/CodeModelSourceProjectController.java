@@ -2,7 +2,7 @@ package io.ksmrva.visual.torch.controller.model.code.source.project;
 
 import io.ksmrva.visual.torch.api.arg.constant.DevTorchApiConstants;
 import io.ksmrva.visual.torch.api.arg.model.code.source.project.CodeModelSourceProjectCreateArgs;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.project.CodeModelSourceProjectDto;
+import io.ksmrva.visual.torch.data.dto.model.code.source.project.CodeModelSourceProjectDto;
 import io.ksmrva.visual.torch.service.model.code.source.project.CodeModelProjectService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

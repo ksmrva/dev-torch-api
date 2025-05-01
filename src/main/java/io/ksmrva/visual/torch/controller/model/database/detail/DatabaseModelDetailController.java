@@ -1,8 +1,8 @@
 package io.ksmrva.visual.torch.controller.model.database.detail;
 
 import io.ksmrva.visual.torch.api.arg.constant.DevTorchApiConstants;
-import io.ksmrva.visual.torch.domain.dto.model.database.detail.category.collection.CollectionCategoryDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.detail.category.field.FieldCategoryDto;
+import io.ksmrva.visual.torch.data.dto.model.database.detail.category.collection.CollectionCategoryDto;
+import io.ksmrva.visual.torch.data.dto.model.database.detail.category.field.FieldCategoryDto;
 import io.ksmrva.visual.torch.service.model.database.detail.DatabaseModelDetailService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

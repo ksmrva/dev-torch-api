@@ -1,6 +1,6 @@
 package io.ksmrva.visual.torch.db.listener;
 
-import io.ksmrva.visual.torch.domain.entity.AbstractBaseEntity;
+import io.ksmrva.visual.torch.data.entity.AbstractBaseEntity;
 import org.hibernate.event.spi.PreInsertEvent;
 import org.hibernate.event.spi.PreInsertEventListener;
 import org.springframework.stereotype.Component;

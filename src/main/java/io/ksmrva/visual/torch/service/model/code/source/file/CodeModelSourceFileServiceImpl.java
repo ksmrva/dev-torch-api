@@ -1,10 +1,11 @@
 package io.ksmrva.visual.torch.service.model.code.source.file;
 
+import io.ksmrva.visual.torch.data.common.explorer.panel.list.entry.ExplorerPanelListEntry;
+import io.ksmrva.visual.torch.data.dto.model.code.source.file.CodeModelSourceFileDto;
+import io.ksmrva.visual.torch.data.dto.model.code.source.file.data.CodeModelSourceFileDataDto;
+import io.ksmrva.visual.torch.data.dto.model.code.source.file.extension.CodeModelSourceLanguageFileExtensionDto;
+import io.ksmrva.visual.torch.data.dto.model.code.source.file.tree.node.CodeModelSourceFileTreeNodeDto;
 import io.ksmrva.visual.torch.db.dao.model.code.source.file.CodeModelFileDao;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.CodeModelSourceFileDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.data.CodeModelSourceFileDataDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.extension.CodeModelSourceLanguageFileExtensionDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.tree.node.CodeModelSourceFileTreeNodeDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static io.ksmrva.visual.torch.data.dto.model.code.source.file.tree.node.CodeModelSourceFileTreeNodeDto.EXPLORER_PANEL_LIST_ENTRY_TYPE_KEY;
 
 @Service
 public class CodeModelSourceFileServiceImpl implements CodeModelSourceFileService {
@@ -52,6 +55,24 @@ public class CodeModelSourceFileServiceImpl implements CodeModelSourceFileServic
     @Override
     public List<CodeModelSourceLanguageFileExtensionDto> getFileCodeExtensions() {
         return this.codeModelFileDao.getFileCodeExtensions();
+    }
+
+    @Override
+    public String getEntryTypeKey() {
+        return EXPLORER_PANEL_LIST_ENTRY_TYPE_KEY;
+    }
+
+    @Override
+    public List<ExplorerPanelListEntry> getSubEntries(BigInteger entryId) {
+        List<ExplorerPanelListEntry> subEntries = new ArrayList<>();
+        if (entryId != null) {
+            List<CodeModelSourceFileTreeNodeDto> childNodes = this.getAllChildNodes(entryId);
+
+            subEntries = childNodes.stream()
+                                   .map(CodeModelSourceFileTreeNodeDto::getExplorerPanelListEntry)
+                                   .toList();
+        }
+        return subEntries;
     }
 
     private CodeModelSourceFileDto createCodeFileFromSystemFilePath(Path systemFilePath) {

@@ -1,6 +1,6 @@
 package io.ksmrva.visual.torch.db.listener;
 
-import io.ksmrva.visual.torch.domain.entity.AbstractBaseEntity;
+import io.ksmrva.visual.torch.data.entity.AbstractBaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

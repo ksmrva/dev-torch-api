@@ -1,10 +1,10 @@
 package io.ksmrva.visual.torch.db.dao.model.database.detail;
 
-import io.ksmrva.visual.torch.domain.dto.DtoFactory;
-import io.ksmrva.visual.torch.domain.dto.model.database.detail.category.collection.CollectionCategoryDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.detail.category.field.FieldCategoryDto;
-import io.ksmrva.visual.torch.domain.entity.model.database.detail.category.collection.CollectionCategory;
-import io.ksmrva.visual.torch.domain.entity.model.database.detail.category.field.FieldCategory;
+import io.ksmrva.visual.torch.data.dto.DtoFactory;
+import io.ksmrva.visual.torch.data.dto.model.database.detail.category.collection.CollectionCategoryDto;
+import io.ksmrva.visual.torch.data.dto.model.database.detail.category.field.FieldCategoryDto;
+import io.ksmrva.visual.torch.data.entity.model.database.detail.category.collection.CollectionCategory;
+import io.ksmrva.visual.torch.data.entity.model.database.detail.category.field.FieldCategory;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;

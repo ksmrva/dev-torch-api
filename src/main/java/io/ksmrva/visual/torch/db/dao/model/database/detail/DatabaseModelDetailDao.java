@@ -1,7 +1,7 @@
 package io.ksmrva.visual.torch.db.dao.model.database.detail;
 
-import io.ksmrva.visual.torch.domain.dto.model.database.detail.category.collection.CollectionCategoryDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.detail.category.field.FieldCategoryDto;
+import io.ksmrva.visual.torch.data.dto.model.database.detail.category.collection.CollectionCategoryDto;
+import io.ksmrva.visual.torch.data.dto.model.database.detail.category.field.FieldCategoryDto;
 
 import java.util.List;
 

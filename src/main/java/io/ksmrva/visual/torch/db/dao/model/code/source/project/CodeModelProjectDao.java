@@ -1,7 +1,7 @@
 package io.ksmrva.visual.torch.db.dao.model.code.source.project;
 
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.CodeModelSourceFileDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.project.CodeModelSourceProjectDto;
+import io.ksmrva.visual.torch.data.dto.model.code.source.file.CodeModelSourceFileDto;
+import io.ksmrva.visual.torch.data.dto.model.code.source.project.CodeModelSourceProjectDto;
 
 import java.util.List;
 

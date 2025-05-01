@@ -1,8 +1,8 @@
 package io.ksmrva.visual.torch.db.dao.documentation.tool.canvas;
 
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.CanvasDto;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.cell.CanvasCustomCellDto;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.cell.CanvasLinkCellDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.CanvasDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.cell.CanvasCustomCellDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.cell.CanvasLinkCellDto;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package io.ksmrva.visual.torch.controller.documentation.tool.canvas;
 
 import io.ksmrva.visual.torch.api.arg.constant.DevTorchApiConstants;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.CanvasDto;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.cell.CanvasCustomCellDto;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.cell.CanvasLinkCellDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.CanvasDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.cell.CanvasCustomCellDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.cell.CanvasLinkCellDto;
 import io.ksmrva.visual.torch.service.documentation.tool.canvas.CanvasService;
 import org.springframework.web.bind.annotation.*;
 

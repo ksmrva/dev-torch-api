@@ -1,8 +1,8 @@
 package io.ksmrva.visual.torch.service.model.code.source.project;
 
 import io.ksmrva.visual.torch.db.dao.model.code.source.project.CodeModelProjectDao;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.file.CodeModelSourceFileDto;
-import io.ksmrva.visual.torch.domain.dto.model.code.source.project.CodeModelSourceProjectDto;
+import io.ksmrva.visual.torch.data.dto.model.code.source.file.CodeModelSourceFileDto;
+import io.ksmrva.visual.torch.data.dto.model.code.source.project.CodeModelSourceProjectDto;
 import io.ksmrva.visual.torch.service.model.code.source.file.CodeModelSourceFileService;
 import org.springframework.stereotype.Service;
 

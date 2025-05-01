@@ -1,9 +1,9 @@
 package io.ksmrva.visual.torch.api.arg.model.database.detail.sql;
 
 import io.ksmrva.visual.torch.api.arg.misc.RegexMatcher;
-import io.ksmrva.visual.torch.domain.dto.model.database.detail.category.field.FieldCategoryDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.detail.sql.path.SqlDatabaseDetailPathDto;
-import io.ksmrva.visual.torch.domain.dto.model.database.detail.category.collection.CollectionCategoryDto;
+import io.ksmrva.visual.torch.data.dto.model.database.detail.category.field.FieldCategoryDto;
+import io.ksmrva.visual.torch.data.dto.model.database.detail.sql.path.SqlDatabaseDetailPathDto;
+import io.ksmrva.visual.torch.data.dto.model.database.detail.category.collection.CollectionCategoryDto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

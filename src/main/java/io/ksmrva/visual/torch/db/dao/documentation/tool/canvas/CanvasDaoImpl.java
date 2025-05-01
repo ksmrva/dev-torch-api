@@ -1,12 +1,12 @@
 package io.ksmrva.visual.torch.db.dao.documentation.tool.canvas;
 
-import io.ksmrva.visual.torch.domain.dto.DtoFactory;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.CanvasDto;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.cell.CanvasCustomCellDto;
-import io.ksmrva.visual.torch.domain.dto.documentation.tool.canvas.cell.CanvasLinkCellDto;
-import io.ksmrva.visual.torch.domain.entity.documentation.tool.canvas.Canvas;
-import io.ksmrva.visual.torch.domain.entity.documentation.tool.canvas.cell.CanvasCustomCell;
-import io.ksmrva.visual.torch.domain.entity.documentation.tool.canvas.cell.CanvasLinkCell;
+import io.ksmrva.visual.torch.data.dto.DtoFactory;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.CanvasDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.cell.CanvasCustomCellDto;
+import io.ksmrva.visual.torch.data.dto.documentation.tool.canvas.cell.CanvasLinkCellDto;
+import io.ksmrva.visual.torch.data.entity.documentation.tool.canvas.Canvas;
+import io.ksmrva.visual.torch.data.entity.documentation.tool.canvas.cell.CanvasCustomCell;
+import io.ksmrva.visual.torch.data.entity.documentation.tool.canvas.cell.CanvasLinkCell;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.transaction.Transactional;

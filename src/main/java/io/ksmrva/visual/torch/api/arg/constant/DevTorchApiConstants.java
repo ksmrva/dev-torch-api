@@ -33,6 +33,13 @@ public abstract class DevTorchApiConstants {
     public final static String CODE_MODEL_DETAIL_BASE_URI_PATH = CODE_MODEL_BASE_URI_PATH + "/detail";
 
     /**
+     * Common URI Path values
+     */
+    public final static String EXPLORER_BASE_URI_PATH = BASE_URI_PATH + "/explorer";
+    public final static String EXPLORER_PANEL_BASE_URI_PATH = EXPLORER_BASE_URI_PATH + "/panel";
+    public final static String EXPLORER_PANEL_LIST_BASE_URI_PATH = EXPLORER_PANEL_BASE_URI_PATH + "/list";
+
+    /**
      * Documentation URI Path values
      */
     public final static String DOCUMENTATION_BASE_URI_PATH = BASE_URI_PATH + "/documentation";
